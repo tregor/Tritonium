@@ -1,0 +1,16 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 240
+tab_width = 4
+
+[*.css]
+indent_style = tab
+
+[{*.ctp,*.engine,*.hphp,*.inc,*.install,*.module,*.php,*.php4,*.php5,*.php___jb_old___,*.phtml,*.profile,*.test,*.theme}]
+indent_style = tab
