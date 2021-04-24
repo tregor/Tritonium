@@ -85,4 +85,19 @@ class Template
 			include CORE."view/blocks/{$blockName}.php";
 		}
 	}
+
+	static function img($imageName)
+	{
+		return Config::get("SITE_SRC") . "img/{$imageName}";
+	}
+
+	static function css($cssFileName)
+	{
+		return Config::get("SITE_SRC") . "css/{$cssFileName}";
+	}
+
+	static function js($javascriptName)
+	{
+		return Config::get("SITE_SRC") . "js/{$javascriptName}";
+	}
 }
