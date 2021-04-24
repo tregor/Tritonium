@@ -5,11 +5,10 @@ namespace core\services;
 class Template
 {
 	private static $settings = [];
-	private static $defaults = [];
 
 	private function __construct() { }
 
-	static function getSummary() { return array_merge(self::$defaults, self::$settings); }
+	static function getSettings() { return self::$settings; }
 
 	static function get($key)
 	{
@@ -77,7 +76,6 @@ class Template
 	}
 
 	static function setDefaults($defaults){
-		self::$defaults = $defaults;
 		self::$settings = $defaults;
 	}
 
