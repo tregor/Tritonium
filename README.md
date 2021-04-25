@@ -48,7 +48,8 @@ Available methods in this library:
 
 ## TODO
 - [X] Add templating engine and view renderer.
-- [ ] Make model system.
+- [X] Make model system.
+- [X] Develop Request service.
 - [ ] Make PDO system.
 - [ ] Add routing.
 - [ ] Implement controllers.
