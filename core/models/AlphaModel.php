@@ -129,7 +129,7 @@ class AlphaModel
 		}
 	}
 
-	static public function add($data)
+	static public function create($data)
 	{
 		try {
 			$model = new static;
