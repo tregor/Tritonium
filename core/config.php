@@ -21,5 +21,6 @@ Config::set("MYSQL_NAME", "database");
 Config::set("SITE_NAME", "Tritonium");
 Config::set("SITE_ROOT", "https://dev.tregor.ru/");
 Config::set("SRC_ROOT", "https://dev.tregor.ru/src/");
+Config::set("DIR_ROOT", __DIR__."/../");
 
 //Настройки проекта
