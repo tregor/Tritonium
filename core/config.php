@@ -12,10 +12,10 @@ Config::set("LOG_LEVEL", "debug");
 Config::set("LOG_PERIOD", 30);
 
 //Конфиг для БД
-Config::set("MySQL_HOST", "localhost");
-Config::set("MySQL_USER", "root");
-Config::set("MySQL_PASS", "");
-Config::set("MySQL_NAME", "database");
+Config::set("MYSQL_HOST", "localhost");
+Config::set("MYSQL_USER", "root");
+Config::set("MYSQL_PASS", "");
+Config::set("MYSQL_NAME", "database");
 
 //Настройки сайта
 Config::set("SITE_NAME", "Tritonium");
