@@ -67,6 +67,14 @@ class AlphaModel
 		return $result;
 	}
 
+	static public function first($value, $key = FALSE){
+		return self::find($value, $key)[0];
+	}
+
+	static public function firstOrFail($value, $key = FALSE){
+		return self::findOrFail($value, $key)[0];
+	}
+
 	static public function findBy($data)
 	{
 		$model = new static;
