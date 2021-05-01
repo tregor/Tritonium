@@ -50,8 +50,9 @@ Available methods in this library:
 - [X] Add templating engine and view renderer.
 - [X] Make model system.
 - [X] Develop Request service.
-- [ ] Make PDO system.
+- [ ] Make full PDO system, not MYSQL only.
 - [ ] Add routing.
+- [ ] Searching a way to implement dynamical table name for Models... (From Static to Object?)
 - [ ] Implement controllers.
 - [ ] Improve documentation.
 - [ ] Refactor code.
