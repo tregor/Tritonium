@@ -17,6 +17,13 @@ Config::set("MYSQL_USER", "root");
 Config::set("MYSQL_PASS", "");
 Config::set("MYSQL_NAME", "database");
 
+//Конфиг для PDO
+Config::set("PDO_TYPE", "mysql");
+Config::set("PDO_HOST", "localhost");
+Config::set("PDO_NAME", "admin_GoodLog");
+Config::set("PDO_USER", "admin_GoodLog");
+Config::set("PDO_PASS", "NKIl5RVnTo");
+
 //Настройки сайта
 Config::set("SITE_NAME", "Tritonium");
 Config::set("SITE_ROOT", "https://dev.tregor.ru/");
