@@ -63,10 +63,9 @@ class Core
 				return FALSE;
 			}
 
-			return self::$PDOInstance;
-		} else {
-			return self::$PDOInstance;
 		}
+
+		return self::$PDOInstance;
 	}
 
 	public static function consolePrint($str, $type = "", $fatal = FALSE)
