@@ -6,6 +6,14 @@ use core\services\Config;
 use core\services\Log;
 use Tritonium\Services\Core;
 
+if (Core::isInstalled()){
+	Core::consolePrint("Tritonium is already installed! Do you want to reinstall it? (Y/n).", "w");
+	$answer = readline("Do you want to reinstall Tritonium? (Y/n) ");
+	if (strtolower($answer) !== "y"){
+		Core::consolePrint("Bye-bye!", "s", TRUE);
+	}
+}
+
 $installationData = [
 	"needInstall" => TRUE,
 	"needUpdate" => FALSE,
@@ -25,6 +33,16 @@ $installationData = [
 
 Core::consolePrint("Starting Tritonium installation.", "i");
 
+Core::consolePrint("Please, check current PDO settings below:", "i");
+Core::consolePrint("PDO_TYPE: ".Config::get("PDO_TYPE"));
+Core::consolePrint("PDO_HOST: ".Config::get("PDO_HOST"));
+Core::consolePrint("PDO_NAME: ".Config::get("PDO_NAME"));
+Core::consolePrint("PDO_USER: ".Config::get("PDO_USER"));
+Core::consolePrint("PDO_PASS: ".Config::get("PDO_PASS"));
+if (readline("Continue? (Y/n) ") !== "Y"){
+	Core::consolePrint("Bye-bye!", "s", TRUE);
+}
+
 //TODO: Функционал детекции перустановки с консольным UI
 $connection = Core::getPDO();
 if (!$connection){
@@ -33,6 +51,7 @@ if (!$connection){
 	Core::consolePrint("Connection to PDO initialized.", "s");
 }
 
+Core::consolePrint("Creating migrations table...", "i");
 $sql = "CREATE TABLE IF NOT EXISTS migrations
 (
 	id        int      NOT NULL AUTO_INCREMENT,
