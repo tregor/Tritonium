@@ -28,7 +28,7 @@ foreach ($migrationFiles as $filename) {
 		}
 	}
 
-	preg_match_all('/(\d{4})_(\d{2})_(\d{2})_(\d{2})(\d{2})(\d{2})_(.*)_(.*)\.sql/mU', $filename, $matches, PREG_SET_ORDER, 0);
+	preg_match_all('/(\d{4})_(\d{2})_(\d{2})_(\d{2})(\d{2})(\d{2})_(.*)_(.*)_table\.sql/mU', $filename, $matches, PREG_SET_ORDER, 0);
 
 	$info = [
 		"year"      => $matches[0][1],
