@@ -39,7 +39,7 @@ Core::consolePrint("PDO_HOST: ".Config::get("PDO_HOST"));
 Core::consolePrint("PDO_NAME: ".Config::get("PDO_NAME"));
 Core::consolePrint("PDO_USER: ".Config::get("PDO_USER"));
 Core::consolePrint("PDO_PASS: ".Config::get("PDO_PASS"));
-if (readline("Continue? (Y/n) ") !== "Y"){
+if (strtolower(readline("Continue? (Y/n) ")) !== "y"){
 	Core::consolePrint("Bye-bye!", "s", TRUE);
 }
 
