@@ -2,6 +2,9 @@
 /**
  * Autoloader making include of vendor packages, Core files and some other base files.
  */
+
+use Tritonium\Services\Core;
+
 ini_set("display_errors", TRUE);
 error_reporting(E_ALL);
 
@@ -17,6 +20,10 @@ includePath(CORE . "libs");
 include_once CORE . "view/defaults.php";
 include_once CORE . "config.php";
 include_once CORE . "functions.php";
+
+if (!Core::isInstalled()){
+	Core::consolePrint("Tritonium is not installed yet! Please, install with core/commands/install.php.", "e", TRUE);
+}
 
 function includePath($path)
 {
