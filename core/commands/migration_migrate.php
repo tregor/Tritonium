@@ -51,7 +51,7 @@ foreach ($migrationFiles as $filename) {
 	unset($info['minute']);
 	unset($info['sec']);
 
-	if (!isset($migration)) {
+	if (empty($migration)) {
 		$migrationID = Migrations::create([
 			"name"      => $info['title'],
 			"status"    => Migrations::STATUS_NOT_CREATED,

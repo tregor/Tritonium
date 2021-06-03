@@ -58,6 +58,7 @@ class Core
 			try {
 				self::$PDOInstance = new PDO("{$type}:host={$host};dbname={$dbname}", $user, $password, [PDO::ATTR_PERSISTENT => TRUE]);
 				self::$PDOInstance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				self::$PDOInstance->exec("SET CHARACTER SET utf8");
 			} catch (Exception $e) {
 				Log::error("Error while creating PDO \"{$type}:host={$host};dbname={$dbname}\" and user:pass is {$user}:{$password}. " . $e->getMessage());
 				return FALSE;

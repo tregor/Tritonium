@@ -6,6 +6,7 @@ use core\services\Config;
 use Exception;
 use PDO;
 use PDOException;
+use Tritonium\Services\Core;
 
 class AlphaModel
 {
@@ -15,15 +16,7 @@ class AlphaModel
 
 	public function __construct()
 	{
-		$host = Config::get("MYSQL_HOST");
-		$dbname = Config::get("MYSQL_NAME");
-		$user = Config::get("MYSQL_USER");
-		$password = Config::get("MYSQL_PASS");
-
-		$connect = "mysql:host={$host};dbname={$dbname}";
-		$this->connect = new PDO($connect, $user, $password);
-		$this->connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$this->connect->exec("SET CHARACTER SET utf8");
+		$this->connect = Core::getPDO();
 	}
 
 	static public function all()
