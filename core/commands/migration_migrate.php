@@ -69,12 +69,14 @@ foreach ($migrationFiles as $filename) {
 
 	try{
 		$connection->exec($info['content']);
-		Core::consolePrint("Migration \"{$info['filename']}\" created successful.", "i");
-
 		$migration['status'] = Migrations::STATUS_READY;
 		Migrations::save($migration);
+
+		Core::consolePrint("Migration \"{$info['filename']}\" created successful.", "i");
 	}catch (Exception $e){
-		$connection->rollBack();
+		if ($connection->inTransaction()){
+			$connection->rollBack();
+		}
 		Core::consolePrint("Error with migration \"{$filename}\": ".$e->getMessage(), "e");
 
 		$migration['status'] = Migrations::STATUS_ERROR;
