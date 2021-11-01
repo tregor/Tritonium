@@ -27,7 +27,9 @@ include_once CORE . "functions.php";
 session_start();
 
 if (!Core::isInstalled()){
-	Core::consolePrint("Tritonium is not installed yet! Please, install with core/commands/install.php.", "e", TRUE);
+	if (basename(__FILE__, '.php') != "install") {
+		Core::consolePrint("Tritonium is not installed yet! Please, install with core/commands/install.php.", "e", TRUE);
+	}
 }
 
 function includePath($path)
