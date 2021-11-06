@@ -1,6 +1,6 @@
 <?php
 
-namespace core\services;
+namespace Tritonium\App\Services;
 
 use \Monolog\Handler\RotatingFileHandler;
 use \Monolog\Logger;

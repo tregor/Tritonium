@@ -1,6 +1,6 @@
 <?php
 
-namespace Tritonium\Services;
+namespace Tritonium\App\Services;
 
 use core\services\Config;
 use PDO;

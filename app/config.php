@@ -3,7 +3,7 @@
  * Config file must be on every project. It contains main settings for project.
  * All settings must was set only here
  */
-use core\services\Config;
+use Tritonium\App\Services\Config;
 
 //Конфиг для Логов
 Config::set("LOG_NAME", "Tritonium");

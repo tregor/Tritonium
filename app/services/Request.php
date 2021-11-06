@@ -1,6 +1,6 @@
 <?php
 
-namespace Tritonium\Services;
+namespace Tritonium\App\Services;
 
 class Request
 {
@@ -57,6 +57,20 @@ class Request
 		} else {
 			throw new \Exception('Param '.$name.' not found');
 		}
+	}
+
+	public static function inputAll($method = NULL)
+	{
+		self::init();
+		$data = self::$params;
+		if (strtoupper($method) == "POST"){
+			$data = self::$post;
+		}
+		if (strtoupper($method) == "GET"){
+			$data = self::$get;
+		}
+
+		return $data;
 	}
 
 	public static function method(){

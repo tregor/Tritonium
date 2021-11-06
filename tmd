@@ -1,0 +1,43 @@
+<?php
+/**
+ * tmd - Tritonium CMD
+ * Tritonium CMD is a utilite used as console entrance to framework
+ */
+require_once __DIR__ . '/app/bootstrap.php';
+
+use Tritonium\App\Base\BaseController;
+use Tritonium\App\Controllers;
+use Tritonium\App\Services\Log;
+
+if ($argv[0] != "tmd") {
+	// If it is not tmd...
+	var_dump("It's not tmd app!");
+}
+
+list($controller, $action) = isset($argv[1]) ? explode("/", $argv[1]) : ["default", "index"];
+$controllerName = toCamelCase($controller) ?: "Default";
+$controllerAction = toCamelCase($action) ?: "Index";
+$controllerFile = DIR_CONTROLLERS . $controllerName . "Controller.php";
+$controllerName = "Tritonium\\App\\Controllers\\".$controllerName."Controller";
+
+
+/** 
+ * Debug notes
+ * Routing must be based like Controller/Action
+ * Controller is Controller name. Default is actions for DefaultController
+ * Action is method name inside Controller
+ */
+// var_dump([
+// 	'file' => $controllerFile,
+// 	'class' => $controllerName,
+// 	'method' => $controllerAction,
+// ]);
+
+if (!file_exists($controllerFile)) {
+	die("Controller file not found");
+}else{
+	require_once $controllerFile;
+}
+
+$controllerClass = new $controllerName();
+$controllerClass->execute($controllerAction);
