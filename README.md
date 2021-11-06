@@ -58,9 +58,9 @@ Available methods in this library:
 - [X] Develop Request service.
 - [X] Make full PDO system, not MYSQL only.
 - [X] Make bootstrapping out of autoload.
-- [~] Add routing and implement controllers.
+- [ ] Add routing and implement controllers.
 - [ ] Move commands to TMD.
-- [ ] More power to controllers! Implement global app vars and BaseController vars (Like "$this->app->request" or "Tritonium::$request")
+- [ ] Implement global access for app vars
 - [ ] Exceptions and errors classification
 - [ ] Take care to in-framework Error Handler
 - [ ] Improve templating engine and view renderer.
