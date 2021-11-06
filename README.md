@@ -40,6 +40,12 @@ Or **install it manually**:
 
     $ wget https://github.com/tregor/Tritonium/archive/master.zip
 
+After downloading you will need to install framework, init DB connection and set some other settings.
+
+To start installation script you need to execute:
+
+    core/commands/install.php
+
 ## Available Methods
 
 Available methods in this library:
@@ -55,7 +61,7 @@ Available methods in this library:
 - [ ] Searching a way to implement dynamical table name for Models... (From Static to Object?)
 - [ ] Add routing.
 - [ ] Implement controllers.
-- [ ] Make Bootstrapping
+- [ ] Make Bootstrapping out of autoload.
 - [ ] Improve documentation.
 - [ ] Refactor code.
 - [ ] Take a cup of coffee.
