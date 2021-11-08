@@ -14,15 +14,15 @@ class Console
 	}
 
 	public static function warning($str, $fatal = FALSE){
-		Console::print($str, 'e', $fatal);
+		Console::print($str, 'w', $fatal);
 	}
 
 	public static function success($str, $fatal = FALSE){
-		Console::print($str, 'e', $fatal);
+		Console::print($str, 's', $fatal);
 	}
 
 	public static function info($str, $fatal = FALSE){
-		Console::print($str, 'e', $fatal);
+		Console::print($str, 'i', $fatal);
 	}
 
 	public static function print($str, $type = "", $fatal = FALSE)
