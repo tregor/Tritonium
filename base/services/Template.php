@@ -1,6 +1,6 @@
 <?php
 
-namespace Tritonium\App\Services;
+namespace Tritonium\Base\Services;
 
 class Template
 {

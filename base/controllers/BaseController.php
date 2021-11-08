@@ -1,6 +1,6 @@
 <?php
 
-namespace Tritonium\App\Base;
+namespace Tritonium\Base\Controllers;
 
 class BaseController
 {
@@ -9,7 +9,6 @@ class BaseController
 
 	public function __construct(){
 		$this->controllerName = get_class($this);
-		var_dump("Hello from ".$this->controllerName);
 	}
 
 	public function execute($action)

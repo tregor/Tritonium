@@ -1,10 +1,10 @@
 <?php
 
-namespace Tritonium\Model;
+namespace Tritonium\App\Models;
 
-use Tritonium\core\AlphaModel;
+use Tritonium\Base\Models\BaseModel;
 
-class User extends AlphaModel {
+class User extends BaseModel {
 
 	/**
 	 * @var string Table in which model's data is stored

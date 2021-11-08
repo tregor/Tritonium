@@ -3,22 +3,26 @@
  * tmd - Tritonium CMD
  * Tritonium CMD is a utilite used as console entrance to framework
  */
-require_once __DIR__ . '/app/bootstrap.php';
+require_once __DIR__ . '/base/bootstrap.php';
 
-use Tritonium\App\Base\BaseController;
+use Tritonium\Base\Controllers\BaseController;
+use Tritonium\Base\Services\Console;
+use Tritonium\Base\Services\Log;
 use Tritonium\App\Controllers;
-use Tritonium\App\Services\Log;
 
-if ($argv[0] != "tmd") {
+if (Console::$args[0] != "tmd") {
 	// If it is not tmd...
 	var_dump("It's not tmd app!");
 }
 
-list($controller, $action) = isset($argv[1]) ? explode("/", $argv[1]) : ["default", "index"];
+list($controller, $action) = isset(Console::$args[1]) ? explode("/", Console::$args[1]) : ["Default", "Index"];
 $controllerName = toCamelCase($controller) ?: "Default";
 $controllerAction = toCamelCase($action) ?: "Index";
-$controllerFile = DIR_CONTROLLERS . $controllerName . "Controller.php";
-$controllerName = "Tritonium\\App\\Controllers\\".$controllerName."Controller";
+
+$controllerBaseFile = DIR_BASE . "controllers/" . $controllerName . "Controller.php";
+$controllerBaseName = "Tritonium\\Base\\Controllers\\".$controllerName."Controller";
+$controllerAppFile = DIR_APP . "controllers/" . $controllerName . "Controller.php";
+$controllerAppName = "Tritonium\\App\\Controllers\\".$controllerName."Controller";
 
 
 /** 
@@ -33,11 +37,18 @@ $controllerName = "Tritonium\\App\\Controllers\\".$controllerName."Controller";
 // 	'method' => $controllerAction,
 // ]);
 
-if (!file_exists($controllerFile)) {
-	die("Controller file not found");
-}else{
-	require_once $controllerFile;
+if (file_exists($controllerAppFile)) {
+    require_once $controllerAppFile;
+    $controllerClass = new $controllerAppName;
+} elseif (file_exists($controllerBaseFile)) {
+    require_once $controllerBaseFile;
+    $controllerClass = new $controllerBaseName;
+} else{
+    throw new \Exception('Controller "' . $controllerName . 'Controller" not found');
 }
 
-$controllerClass = new $controllerName();
-$controllerClass->execute($controllerAction);
+if ($controllerClass instanceof Tritonium\Base\Controllers\BaseController) {
+    $response = $controllerClass->execute($controllerAction);
+
+    return $response;
+}

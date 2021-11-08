@@ -1,10 +1,10 @@
 <?php
 
-namespace Tritonium\Model;
+namespace Tritonium\Base\Models;
 
-use Tritonium\core\AlphaModel;
+use Tritonium\Base\Models\BaseModel;
 
-class Migrations extends AlphaModel
+class Migrations extends BaseModel
 {
 	const STATUS_NOT_CREATED = 0;
 	const STATUS_READY       = 1;

@@ -1,14 +1,14 @@
 <?php
 
-namespace Tritonium\core;
+namespace Tritonium\Base\Models;
 
-use core\services\Config;
+use Tritonium\Base\Services\Core;
+use Tritonium\Base\Services\Config;
 use Exception;
 use PDO;
 use PDOException;
-use Tritonium\Services\Core;
 
-class AlphaModel
+class BaseModel
 {
 
 	protected $connect;

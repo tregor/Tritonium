@@ -1,11 +1,11 @@
 <?php
 
-namespace Tritonium\App\Services;
+namespace Tritonium\Base\Services;
 
-use core\services\Config;
+use Tritonium\Base\Services\Config;
 use PDO;
 use Exception;
-use core\services\Log;
+use Tritonium\Base\Services\Log;
 
 class Core
 {
@@ -69,36 +69,8 @@ class Core
 		return self::$PDOInstance;
 	}
 
-	public static function consolePrint($str, $type = "", $fatal = FALSE)
+	public static function isDebug()
 	{
-		$timestamp = time();
-
-		switch ($type) {
-			case 'error':
-			case 'e': //error
-				$color = "\033[31m";
-				break;
-			case 'warning':
-			case 'w': //warning
-				$color = "\033[33m";
-				break;
-			case 'success':
-			case 's': //success
-				$color = "\033[32m";
-				break;
-			case 'info':
-			case 'i': //info
-				$color = "\033[36m";
-				break;
-			default:
-				$color = "\033[0m";
-				break;
-		}
-		printf($color . "[%d]\t%s\t%s", $timestamp, date("d.m.Y H:i:s", $timestamp), $str);
-		printf("\033[0m\n");
-
-		if ($fatal) {
-			die();
-		}
+		return Config::get("TMD_DEBUG");
 	}
 }
