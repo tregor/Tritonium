@@ -42,15 +42,29 @@ Or **install it manually**:
 
 After downloading you will need to install framework, init DB connection and set some other settings.
 
+First edit config.php for your needs and init DB connection
+
+    nano config.php
+
 To start installation script you need to execute:
 
-    core/commands/install.php
+    php tmd core/install
 
 ## Available Methods
 
 Available methods in this library:
 
-* Work In Progress
+### Create new migration
+
+To create any new migration SQL (install/update/delete operations) use this command:
+
+    php tmd migrations/create
+
+### Execute migrations
+
+This command will execute every well-formated migration SQL-file:
+
+    php tmd migrations/migrate
 
 ## TODO
 - [X] Add templating engine and view renderer.
@@ -58,8 +72,8 @@ Available methods in this library:
 - [X] Develop Request service.
 - [X] Make full PDO system, not MYSQL only.
 - [X] Make bootstrapping out of autoload.
-- [ ] Add routing and implement controllers.
-- [ ] Move commands to TMD.
+- [X] Add routing and implement controllers.
+- [X] Move commands to TMD.
 - [ ] Implement global access for app vars
 - [ ] Exceptions and errors classification
 - [ ] Take care to in-framework Error Handler
