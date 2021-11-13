@@ -20,6 +20,7 @@
 use Tritonium\Base\Services\Core;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Console;
+use Tritonium\Base\Services\View;
 
 define("ROOT",               __DIR__ . "/../");
 define("DIR_ROOT",           __DIR__ . "/../");
@@ -71,6 +72,7 @@ if (Core::isDebug()) {
 session_start();
 
 Console::$args = $argv;
+Core::$view = new View();
 
 function require_path($path)
 {

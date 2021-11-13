@@ -9,7 +9,10 @@ use Tritonium\Base\Services\Log;
 
 class Core
 {
-	const INSTALL_LOG_FORMAT = "";
+	// Renderer
+	public static $view;
+
+	public static $app;
 
 	private static $PDOInstance = NULL;
 
