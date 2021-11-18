@@ -2,9 +2,6 @@
 
 namespace Tritonium\Base\Services;
 
-use Tritonium\Base\BaseService;
-
-class View extends BaseService {
 /**
  *
  * Core::$view->render('template.name', $params);
@@ -20,6 +17,7 @@ class View extends BaseService {
  * 
  * 
  */
+class View extends BaseService {
 	private $data = [];
 	private $headers = [];
 	private $httpcode = 200;

@@ -2,8 +2,6 @@
 
 namespace Tritonium\Base\Services;
 
-use Tritonium\Base\BaseService;
-
 class PDO extends BaseService
 {
 	protected $type 	= NULL;

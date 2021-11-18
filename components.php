@@ -28,6 +28,6 @@ $config['components'] = [
         ],
     ],
     // 'console' => Console::class,
-    // 'request' => Request::class,
+    'request' => Request::class,
     'view' => View::class,
 ];

@@ -2,8 +2,6 @@
 
 namespace Tritonium\Base\Services;
 
-use Tritonium\Base\BaseService;
-
 class Request extends BaseService 
 {
 	/**
@@ -48,8 +46,8 @@ class Request extends BaseService
 
 	public function __construct()
 	{
-		$this->rawData 		= parse_url($_SERVER['REQUEST_URI']);
-		$this->method 		= $_SERVER['REQUEST_METHOD'];
+		$this->rawData 		= parse_url(@$_SERVER['REQUEST_URI']) ?: [];
+		$this->method 		= @$_SERVER['REQUEST_METHOD'] ?: "GET";
 		$this->path 		= array_filter(explode("/", ($this->rawData['path'] ?: "/")));
 		$this->body 		= file_get_contents("php://input");
 		$this->headers 		= getallheaders();
