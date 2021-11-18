@@ -1,9 +1,8 @@
 <?php
 /**
- * Autoloader making include of vendor packages, Core files and some other base files.
+ * Autoloader making include of vendor packages, core files and some other base files.
  * 
  * Global variables:
- * @var $core Core class maintaining app 
  * 
  * Request as static class used inside controller for expamle
  * 
@@ -18,7 +17,6 @@
 
 
 use Tritonium\Base\App;
-use Tritonium\Base\Core;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\View;
@@ -40,20 +38,3 @@ require_once(DIR_BASE . "BaseClass.php");
 require_once(DIR_BASE . "App.php");
 
 App::init($config);
-
-
-// /**
-//  * Loading base components
-//  */
-// require_path(DIR_BASE);
-// require_path(DIR_BASE . "services/");
-// require_path(DIR_BASE . "models/");
-// require_path(DIR_BASE . "controllers/");
-// require_path(DIR_BASE . "exceptions/");
-
-// /**
-//  * Loading app components
-//  */
-// require_path(DIR_APP . "services/");
-// require_path(DIR_APP . "models/");
-// // require_path(DIR_APP . "controllers/");  // We don't need to include all controllers, bcs we will include only controller that we need. But later TODO: make class and components mapper!

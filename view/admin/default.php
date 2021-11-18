@@ -1,6 +1,6 @@
 <?php
 
-use Tritonium\Base\Services\Core;
+use Tritonium\Base\Services\App;
 use Tritonium\Base\Services\View;
 
 /**
@@ -9,11 +9,11 @@ use Tritonium\Base\Services\View;
  * @var $data Array
  */
 ?>
-<?Core::$view->include('admin.block.header')?>
+<?App::$view->include('admin.block.header')?>
 
 <div class="container">
   <!-- Content here -->
   <h1>Hello, world!</h1>
 </div>
 
-<?Core::$view->include('admin.block.footer')?>
+<?App::$view->include('admin.block.footer')?>

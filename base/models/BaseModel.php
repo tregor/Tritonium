@@ -2,11 +2,10 @@
 
 namespace Tritonium\Base\Models;
 
-use Tritonium\Base\Core;
+use Tritonium\Base\App;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\BaseClass;
 use Exception;
-use PDO;
 use PDOException;
 
 class BaseModel extends BaseClass
@@ -17,7 +16,7 @@ class BaseModel extends BaseClass
 
 	public function __construct()
 	{
-		$database = Core::$components->db;
+		$database = App::$components->db;
 		$this->connect = $database->instance();
 	}
 

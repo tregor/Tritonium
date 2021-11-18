@@ -4,11 +4,11 @@ namespace Tritonium\Base\Services;
 
 /**
  *
- * Core::$view->render('template.name', $params);
+ * App::$view->render('template.name', $params);
  * Will render HTML from "/view/template/name.php"
  * 
  * Inside template it can be includes like
- * Core::$view->include('block.name');
+ * App::$view->include('block.name');
  * Will include HTML from "/view/block/name.php"
  * Detect parent template inside!
  * 

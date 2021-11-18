@@ -35,6 +35,7 @@ class App extends BaseClass
 		//TODO: KRIVO@! Perepisat and refactor code
 		// Console::$args = $argv;
 		App::$components = self::components($config['components']);
+		App::$view = App::$components->view;
 		session_start();
 	}
 

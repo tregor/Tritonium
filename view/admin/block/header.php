@@ -1,6 +1,6 @@
 <?php
 
-use Tritonium\Base\Services\Core;
+use Tritonium\Base\Services\App;
 use Tritonium\Base\Services\View;
 
 /**

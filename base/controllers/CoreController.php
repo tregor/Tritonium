@@ -6,18 +6,18 @@ use Tritonium\Base\Controllers\BaseController;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Log;
 use Tritonium\Base\Services\Console;
-use Tritonium\Base\Core;
+use Tritonium\Base\App;
 
 class CoreController extends BaseController
 {
 	public function actionInstall(){
-		if (Core::isInstalled()){
-			//TODO: Функционал детекции перустановки с консольным UI
-			Console::warning("Tritonium is already installed! Do you want to reinstall it? (Y/n).");
-			if (strtolower(Console::input("Do you want to reinstall Tritonium? (Y/n) ")) !== "y"){
-				Console::info("Bye-bye!", TRUE);
-			}
-		}
+		// if (App::isInstalled()){
+		// 	//TODO: Функционал детекции перустановки с консольным UI
+		// 	Console::warning("Tritonium is already installed! Do you want to reinstall it? (Y/n).");
+		// 	if (strtolower(Console::input("Do you want to reinstall Tritonium? (Y/n) ")) !== "y"){
+		// 		Console::info("Bye-bye!", TRUE);
+		// 	}
+		// }
 
 		$installationData = [
 			"needInstall" => TRUE,
@@ -53,7 +53,7 @@ class CoreController extends BaseController
 		// 	Console::info("Bye-bye!", TRUE);
 		// }
 
-		$connection = Core::$components->db->instance();
+		$connection = App::$components->db;
 		if (!$connection){
 			Console::error("Error while initializing PDO Connection!", TRUE);
 		}else{
@@ -82,13 +82,13 @@ class CoreController extends BaseController
 		 */
 
 		$installationData['needInstall'] = FALSE;
-		file_put_contents(__DIR__."/../installation.json", json_encode($installationData));
+		file_put_contents(App::$config['app']['root'] . 'installation.json', json_encode($installationData, JSON_PRETTY_PRINT));
 		Console::info("Installation finished!");
 	}
 
 	public function actionNginx()
 	{
-		$serverName = "test.tregor.ru";
+		$serverName = App::$config['app']['server'];
 		$rootDir = "/var/www/{$serverName}/web/";
 		$logAccess = "{$rootDir}../logs/access.log";
 		$logError = "{$rootDir}../logs/error.log";

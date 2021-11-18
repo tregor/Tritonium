@@ -2,8 +2,6 @@
 
 namespace Tritonium\Base\Models;
 
-use Tritonium\Base\Models\BaseModel;
-
 class Migrations extends BaseModel
 {
 	const STATUS_NOT_CREATED = 0;

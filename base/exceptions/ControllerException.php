@@ -8,6 +8,6 @@ class ControllerException extends BaseException
 
 	public function __construct($message = null, $context = [])
 	{
-		parent::__construct(get_called_class(), $message, $model);
+		parent::__construct(get_called_class(), $message, $context);
 	}
 }

@@ -6,7 +6,7 @@ use Tritonium\Base\Controllers\BaseController;
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Log;
-use Tritonium\Base\Services\Core;
+use Tritonium\Base\Services\App;
 use Tritonium\Base\Models\Migrations;
 
 class MigrationsController extends BaseController
@@ -28,7 +28,7 @@ class MigrationsController extends BaseController
 				$operation = "delete";
 				break;
 			default:
-				Core::consolePrint("Bye-bye!", "s", TRUE);
+				Console::success("Bye-bye!");
 				break;
 		}
 		$tableName = strtolower(Console::input("Enter table name: "));
@@ -80,7 +80,7 @@ class MigrationsController extends BaseController
 		unset($migrationFiles['0']);
 		unset($migrationFiles['1']);
 
-		$connection = Core::getPDO();
+		$connection = App::$components->db;
 
 		foreach ($migrationFiles as $filename) {
 			Console::print("Processing migration \"{$filename}\".", "i");

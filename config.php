@@ -8,7 +8,7 @@ $config = [
     'app' => [
         'debug' => TRUE,
         'root' => __DIR__,
-        'project' => basename(__DIR__),
+        'server' => basename(__DIR__),
     ],
     'components' => require __DIR__ . '/components.php',
     'log' => [
