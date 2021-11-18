@@ -10,7 +10,7 @@ $config = [
 
     //Logs config
     "LOG_NAME" => "Tritonium",
-    "LOG_PATH" => "log/main.log",
+    "LOG_PATH" => "logs/main.log",
     "LOG_LEVEL" => "debug",
     "LOG_PERIOD" => 30,
 
@@ -23,7 +23,7 @@ $config = [
 
     //Web config
     "SITE_NAME" => "Tritonium 2.0",
-    "SITE_ROOT" => "https://dev.tregor.space/",
+    "SITE_ROOT" => "test.tregor.ru",
     "SRC_ROOT" => "https://dev.tregor.space/web/src/",
     "DIR_ROOT" => __DIR__."/../",
 ];

@@ -4,6 +4,7 @@ namespace Tritonium\App\Controllers;
 
 use Tritonium\Base\Controllers\BaseController;
 use Tritonium\Base\Services\Console;
+use Tritonium\Base\Services\Core;
 
 class DefaultController extends BaseController
 {
@@ -13,6 +14,8 @@ class DefaultController extends BaseController
 
 	public function actionTest()
 	{
-		Console::info("Sam test");
+		$request = Core::$request;
+
+		var_dump(json_decode($request->body()));
 	}
 }
