@@ -9,8 +9,15 @@ use Tritonium\Base\Services\Log;
 
 class Core
 {
-	// Renderer
+	/**
+	 * Renderer Engine
+	 */
 	public static $view;
+
+	/**
+	 * Request object
+	 */
+	public static $request;
 
 	public static $app;
 

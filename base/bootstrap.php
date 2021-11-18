@@ -21,6 +21,7 @@ use Tritonium\Base\Services\Core;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\View;
+use Tritonium\Base\Services\Request;
 
 define("ROOT",               __DIR__ . "/../");
 define("DIR_ROOT",           __DIR__ . "/../");
@@ -47,11 +48,7 @@ require_path(DIR_BASE . "controllers/");
  */
 require_path(DIR_APP . "services/");
 require_path(DIR_APP . "models/");
-require_path(DIR_APP . "controllers/");
-
-
-// TODO: Template and view rendering engine
-// include_once DIR_ROOT . "view/defaults.php";
+// require_path(DIR_APP . "controllers/");  // We don't need to include all controllers, bcs we will include only controller that we need. But later TODO: make class and components mapper!
 
 
 /**
@@ -73,6 +70,7 @@ session_start();
 
 Console::$args = $argv;
 Core::$view = new View();
+Core::$request = new Request();
 
 function require_path($path)
 {
