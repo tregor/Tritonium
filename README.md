@@ -74,12 +74,16 @@ This command will execute every well-formated migration SQL-file:
 - [X] Make bootstrapping out of autoload.
 - [X] Add routing and implement controllers.
 - [X] Move commands to TMD.
-- [ ] Implement global access for app vars
-- [ ] Exceptions and errors classification
+- [X] Implement global access for app vars
+- [X] Exceptions system
+- [ ] Exceptions and Errors classification
+- [ ] Installation wizard.
+- [ ] Implement events system
+- [ ] Made ActiveRecord models
+- [ ] Make Dependency Injection Container for components
 - [ ] Take care to in-framework Error Handler
 - [ ] Improve templating engine and view renderer.
-- [ ] Searching a way to implement dynamical table name for Models... (From Static to Object?)
-- [ ] Improve documentation.
+- [ ] Improve wiki and in-code comments.
 - [ ] Refactor code.
 - [ ] Take a cup of coffee.
 
