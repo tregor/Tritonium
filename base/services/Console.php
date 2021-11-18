@@ -9,6 +9,16 @@ class Console
 {
 	public static $args;
 
+	public static function init($args = [])
+	{
+		Console::$args = $args;
+	}
+
+	public static function args($key = NULL)
+	{
+		return ($key === NULL) ? Console::$args : Console::$args[$key] ?: NULL ;
+	}
+
 	public static function error($str, $fatal = FALSE){
 		Console::print($str, 'e', $fatal);
 	}

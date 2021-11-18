@@ -33,8 +33,8 @@ class App extends BaseClass
 		spl_autoload_register([App::class, 'loadClass']);
 
 		//TODO: KRIVO@! Perepisat and refactor code
+		// Console::$args = $argv;
 		App::$components = self::components($config['components']);
-		Console::$args = $argv;
 		session_start();
 	}
 
@@ -49,17 +49,16 @@ class App extends BaseClass
 		$dir = strtolower(dirname(str_replace(['\\', 'Tritonium'], ['/', ''], $className)));
 		$path = App::$config['app']['root'] . $dir . '/' . $class . '.php';
 
-		// var_dump([
-		// 	'className' => $className,
-		// 	'class' => $class,
-		// 	'dir' => $dir,
-		// 	'path' => $path,
-		// ]);
-
 		if (is_file($path)) {
     		require_once $path;
     		return TRUE;
 		}else{
+			var_dump([
+				'className' => $className,
+				'class' => $class,
+				'dir' => $dir,
+				'path' => $path,
+			]);
 			throw new BaseException(App::class, "Can't load dynamic class {$className} on path {$path}");
 		}
 	}

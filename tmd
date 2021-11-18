@@ -10,11 +10,16 @@ use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\Log;
 use Tritonium\App\Controllers;
 
-if (Console::$args[0] != "tmd") {
+Console::init($argv);
+if (Console::args(0) != "tmd") {
 	// If it is not tmd...
-	// var_dump("It's not tmd app!");
+	die("It's not tmd app!");
 }
 
+
+/**
+ * Routing system
+ */
 list($controller, $action) = isset(Console::$args[1]) ? explode("/", Console::$args[1]) : ["Default", "Index"];
 $controllerName = toCamelCase($controller) ?: "Default";
 $controllerAction = toCamelCase($action) ?: "Index";
