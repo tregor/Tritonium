@@ -13,7 +13,8 @@ $route = preg_replace('/\?.*/', '', $route);
 
 
 // TODO: Routing by app service
-list($controller, $action) = explode("/", $route);
+// var_dump(explode("/", $route));
+list($null, $controller, $action) = explode("/", $route);
 $controllerName = toCamelCase($controller) ?: "Default";
 $controllerAction = toCamelCase($action) ?: "Index";
 $controllerFile = DIR_CONTROLLERS . $controllerName . "Controller.php";
@@ -27,9 +28,11 @@ $controllerName = "Tritonium\\App\\Controllers\\".$controllerName."Controller";
  * Action is method name inside Controller
  */
 // var_dump([
-//  'file' => $controllerFile,
-//  'class' => $controllerName,
-//  'method' => $controllerAction,
+//     'controller' => $controller,
+//     'action' => $action,
+//     'controllerName' => $controllerName,
+//     'controllerAction' => $controllerAction,
+//     'controllerFile' => $controllerFile,
 // ]);
 // die();
 
