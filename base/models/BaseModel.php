@@ -2,7 +2,7 @@
 
 namespace Tritonium\Base\Models;
 
-use Tritonium\Base\Services\Core;
+use Tritonium\Base\Core;
 use Tritonium\Base\Services\Config;
 use Exception;
 use PDO;
@@ -16,7 +16,8 @@ class BaseModel
 
 	public function __construct()
 	{
-		$this->connect = Core::getPDO();
+		$database = Core::$components->db;
+		$this->connect = $database->instance();
 	}
 
 	static public function all()

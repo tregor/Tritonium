@@ -5,8 +5,8 @@ namespace Tritonium\Base\Controllers;
 use Tritonium\Base\Controllers\BaseController;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Log;
-use Tritonium\Base\Services\Core;
 use Tritonium\Base\Services\Console;
+use Tritonium\Base\Core;
 
 class CoreController extends BaseController
 {
@@ -39,21 +39,21 @@ class CoreController extends BaseController
 		Console::info("Starting Tritonium installation...");
 
 
-		/**
-		 * Start of installation module Migrations
-		 */
-		Console::info("Please, check current PDO settings below:");
-		Console::print("PDO_TYPE: ".Config::get("PDO_TYPE"));
-		Console::print("PDO_HOST: ".Config::get("PDO_HOST"));
-		Console::print("PDO_NAME: ".Config::get("PDO_NAME"));
-		Console::print("PDO_USER: ".Config::get("PDO_USER"));
-		Console::print("PDO_PASS: ".Config::get("PDO_PASS"));
-		if (strtolower(Console::input("Continue? (Y/n) ")) !== "y"){
-			//TODO: Input for each field
-			Console::info("Bye-bye!", TRUE);
-		}
+		// /**
+		//  * Start of installation module Migrations
+		//  */
+		// Console::info("Please, check current PDO settings below:");
+		// Console::print("PDO_TYPE: ".Config::get("PDO_TYPE"));
+		// Console::print("PDO_HOST: ".Config::get("PDO_HOST"));
+		// Console::print("PDO_NAME: ".Config::get("PDO_NAME"));
+		// Console::print("PDO_USER: ".Config::get("PDO_USER"));
+		// Console::print("PDO_PASS: ".Config::get("PDO_PASS"));
+		// if (strtolower(Console::input("Continue? (Y/n) ")) !== "y"){
+		// 	//TODO: Input for each field
+		// 	Console::info("Bye-bye!", TRUE);
+		// }
 
-		$connection = Core::getPDO();
+		$connection = Core::$components->db->instance();
 		if (!$connection){
 			Console::error("Error while initializing PDO Connection!", TRUE);
 		}else{

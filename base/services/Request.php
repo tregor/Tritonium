@@ -2,7 +2,9 @@
 
 namespace Tritonium\Base\Services;
 
-class Request
+use Tritonium\Base\BaseService;
+
+class Request extends BaseService 
 {
 	/**
 	 * @var array Parsed $_SERVER['REQUEST_URI']
@@ -44,7 +46,7 @@ class Request
 	 */
 	protected $paramsPOST = [];
 
-	public function __construct($value='')
+	public function __construct()
 	{
 		$this->rawData 		= parse_url($_SERVER['REQUEST_URI']);
 		$this->method 		= $_SERVER['REQUEST_METHOD'];

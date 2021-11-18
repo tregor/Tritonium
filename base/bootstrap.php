@@ -17,7 +17,7 @@
  */
 
 
-use Tritonium\Base\Services\Core;
+use Tritonium\Base\Core;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\View;
@@ -34,11 +34,13 @@ define("DIR_SERVICES",		 __DIR__ . "/../app/services/");
 
 require_once(DIR_ROOT . "vendor/autoload.php");
 require_once(DIR_ROOT . "config.php");
+require_once(DIR_ROOT . "components.php");
 require_once(DIR_BASE . "functions.php");
 
 /**
  * Loading base components
  */
+require_path(DIR_BASE);
 require_path(DIR_BASE . "services/");
 require_path(DIR_BASE . "models/");
 require_path(DIR_BASE . "controllers/");
@@ -54,9 +56,9 @@ require_path(DIR_APP . "models/");
 /**
  * Settings from config.php
  */
-foreach($config as $key => $val){
-    Config::set($key, $val);
-}
+// foreach($config as $key => $val){
+//     Config::set($key, $val);
+// }
 
 if (Core::isDebug()) {
     ini_set('log_errors', TRUE); // Error/Exception file logging engine.
@@ -66,18 +68,8 @@ if (Core::isDebug()) {
     ini_set('error_log', DIR_ROOT . "log/errors.log"); // Logging file path
 }
 
-session_start();
-
 Console::$args = $argv;
-Core::$view = new View();
-Core::$request = new Request();
+// Core::$app = new App();
+Core::init($config);
 
-function require_path($path)
-{
-    $files = scandir($path);
-    foreach ($files as $file) {
-        if (preg_match("/(.*)\.php/", $file)) {
-            require_once $path . "/" . $file;
-        }
-    }
-}
+session_start();

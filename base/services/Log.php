@@ -2,10 +2,11 @@
 
 namespace Tritonium\Base\Services;
 
+use Tritonium\Base\BaseService;
 use \Monolog\Handler\RotatingFileHandler;
 use \Monolog\Logger;
 
-class Log
+class Log extends BaseService
 {
 	private static $logger;
 

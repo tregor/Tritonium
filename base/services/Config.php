@@ -2,7 +2,9 @@
 
 namespace Tritonium\Base\Services;
 
-class Config
+use Tritonium\Base\BaseService;
+
+class Config extends BaseService
 {
 	private static $cfg = [];
 

@@ -2,7 +2,9 @@
 
 namespace Tritonium\Base\Services;
 
-class View {
+use Tritonium\Base\BaseService;
+
+class View extends BaseService {
 /**
  *
  * Core::$view->render('template.name', $params);
@@ -86,4 +88,19 @@ class View {
 		$this->httpcode = $code;
 		return $this;
 	}
+
+	// static function img($imageName)
+	// {
+	// 	return Config::get("SITE_SRC") . "img/{$imageName}";
+	// }
+
+	// static function css($cssFileName)
+	// {
+	// 	return Config::get("SITE_SRC") . "css/{$cssFileName}";
+	// }
+
+	// static function js($javascriptName)
+	// {
+	// 	return Config::get("SITE_SRC") . "js/{$javascriptName}";
+	// }
 }
