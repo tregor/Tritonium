@@ -7,7 +7,7 @@ use Exception;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Log;
 
-class Core extends BaseComponent
+class Core extends BaseClass
 {
 	public static $app;
 

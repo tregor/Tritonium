@@ -4,11 +4,12 @@ namespace Tritonium\Base\Models;
 
 use Tritonium\Base\Core;
 use Tritonium\Base\Services\Config;
+use Tritonium\Base\BaseClass;
 use Exception;
 use PDO;
 use PDOException;
 
-class BaseModel
+class BaseModel extends BaseClass
 {
 
 	protected $connect;

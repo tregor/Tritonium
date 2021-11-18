@@ -20,7 +20,7 @@ class Config extends BaseService
 	static function set($key, $value)
 	{
 		if (!defined($key)) {
-			define($key, $value);
+			define('cfg_' . $key, $value);
 		}
 		self::$cfg[$key] = $value;
 	}

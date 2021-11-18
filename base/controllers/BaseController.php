@@ -2,7 +2,9 @@
 
 namespace Tritonium\Base\Controllers;
 
-class BaseController
+use Tritonium\Base\BaseClass;
+
+class BaseController extends BaseClass
 {
 	private $controllerName;
 	private $controllerAction;

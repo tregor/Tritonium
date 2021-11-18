@@ -2,13 +2,13 @@
 
 namespace Tritonium\Base\Services;
 
-use Tritonium\Base\Core;
+use Tritonium\Base\BaseClass;
 
-class BaseService extends \StdClass
+class BaseService extends BaseClass
 {
     public function __construct($data = [])
     {
-        Core::configure($this, $data);
+        BaseClass::configure($this, $data);
     }
 
 	public function __set($name, $value): void
