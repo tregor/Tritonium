@@ -85,4 +85,46 @@ class CoreController extends BaseController
 		file_put_contents(__DIR__."/../installation.json", json_encode($installationData));
 		Console::info("Installation finished!");
 	}
+
+	public function actionNginx()
+	{
+		$serverName = "test.tregor.ru";
+		$rootDir = "/var/www/{$serverName}/web/";
+		$logAccess = "{$rootDir}../logs/access.log";
+		$logError = "{$rootDir}../logs/error.log";
+
+		$config = <<<NGINX
+server {
+    charset utf-8;
+    client_max_body_size 128M;
+
+    listen 80;
+    listen [::]:80;
+
+    root {$rootDir};
+    index index.php;
+
+    access_log {$logAccess};
+    error_log {$logAccess};
+
+    server_name {$serverName};
+
+    location / {
+        try_files \$uri \$uri/ /index.php?\$args;
+    }
+
+    location ~ \\.php\$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+    }
+
+    location ~ /\.(ht|svn|git) {
+        deny all;
+    }
+}
+NGINX;
+
+	file_put_contents("/etc/nginx/sites/{$serverName}", $config);
+	}
 }
