@@ -3,19 +3,28 @@
 namespace Tritonium\App\Controllers;
 
 use Tritonium\Base\Controllers\BaseController;
-use Tritonium\Base\Services\Console;
-use Tritonium\Base\Services\Core;
+use Tritonium\Base\Core;
+use Tritonium\Base\Models\Migrations;
 
 class DefaultController extends BaseController
 {
 	public function actionIndex(){
-		var_dump("Some logic!");
+		var_dump(Core::getInstallation());
 	}
 
 	public function actionTest()
 	{
-		$request = Core::$request;
+		$database = Core::$components->db;
 
-		var_dump(json_decode($request->body()));
+		var_dump([
+			$database,
+		]);
+	}
+
+	public function actionMigrations()
+	{
+		$migrations = Migrations::all();
+
+		var_dump($migrations);
 	}
 }

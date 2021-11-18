@@ -14,7 +14,7 @@ $route = preg_replace('/\?.*/', '', $route);
 
 // TODO: Routing by app service
 // var_dump(explode("/", $route));
-list($null, $controller, $action) = explode("/", $route);
+@list($null, $controller, $action) = explode("/", $route);
 $controllerName = toCamelCase($controller) ?: "Default";
 $controllerAction = toCamelCase($action) ?: "Index";
 $controllerFile = DIR_CONTROLLERS . $controllerName . "Controller.php";

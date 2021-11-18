@@ -12,7 +12,7 @@ use Tritonium\App\Controllers;
 
 if (Console::$args[0] != "tmd") {
 	// If it is not tmd...
-	var_dump("It's not tmd app!");
+	// var_dump("It's not tmd app!");
 }
 
 list($controller, $action) = isset(Console::$args[1]) ? explode("/", Console::$args[1]) : ["Default", "Index"];
@@ -32,10 +32,16 @@ $controllerAppName = "Tritonium\\App\\Controllers\\".$controllerName."Controller
  * Action is method name inside Controller
  */
 // var_dump([
-// 	'file' => $controllerFile,
-// 	'class' => $controllerName,
-// 	'method' => $controllerAction,
+//     'controller' => $controller,
+//     'action' => $action,
+//     'controllerName' => $controllerName,
+//     'controllerAction' => $controllerAction,
+//     'controllerBaseFile' => $controllerBaseFile,
+//     'controllerBaseName' => $controllerBaseName,
+//     'controllerAppFile' => $controllerAppFile,
+//     'controllerAppName' => $controllerAppName,
 // ]);
+// die();
 
 if (file_exists($controllerAppFile)) {
     require_once $controllerAppFile;
