@@ -4,10 +4,10 @@ namespace Tritonium\Base\Exceptions;
 
 class ServiceException extends BaseException
 {
-	private $code = 3000;
+	protected $code = 3000;
 
-	public function __construct($service, $message = null, $context = [])
+	public function __construct($message = null, $context = [])
 	{
-		parent::__construct($service::class, $message, $context = []);
+		parent::__construct(get_called_class(), $message, $context = []);
 	}
 }

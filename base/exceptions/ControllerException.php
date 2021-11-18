@@ -4,10 +4,10 @@ namespace Tritonium\Base\Exceptions;
 
 class ControllerException extends BaseException
 {
-	private $code = 1000;
+	protected $code = 1000;
 
-	public function __construct($controller, $message = null, $context = [])
+	public function __construct($message = null, $context = [])
 	{
-		parent::__construct($controller::class, $message, $model);
+		parent::__construct(get_called_class(), $message, $model);
 	}
 }

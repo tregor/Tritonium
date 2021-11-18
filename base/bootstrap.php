@@ -44,6 +44,7 @@ require_path(DIR_BASE);
 require_path(DIR_BASE . "services/");
 require_path(DIR_BASE . "models/");
 require_path(DIR_BASE . "controllers/");
+require_path(DIR_BASE . "exceptions/");
 
 /**
  * Loading app components

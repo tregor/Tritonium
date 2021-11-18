@@ -5,20 +5,24 @@ namespace Tritonium\Base\Exceptions;
 class BaseException extends \Exception
 {
 	private $initiator;
-	private $context;
-	private $message;
-	private $code = 0;
+	private $context = [];
+	protected $code = 0;
 
 	public function __construct($initiator, $message = "", $context = [])
 	{
 		$this->initiator = $initiator;
 		$this->context = $context;
 
-		parent::__construct($this->composeMessage(), $this->code);
+		parent::__construct($this->composeMessage($message), $this->code);
 	}
 
-	public function composeMessage()
+	public function composeMessage($message)
 	{
-		return sprintf("Initiator: %s\r\nMessage: %s\r\nContext: %s", [$this->initiator, $this->message, print_r($this->context, TRUE)]);
+		return sprintf(
+			"\r\nInitiator: %s\r\nMessage: %s\r\nContext: %s\r\n", 
+			$this->initiator,
+			$message,
+			print_r($this->context, TRUE)
+		);
 	}
 }
