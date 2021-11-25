@@ -4,7 +4,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/tregor/Tritonium?style=flat-square)](https://github.com/tregor/Tritonium/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/tregor/Tritonium?style=flat-square)](https://github.com/tregor/ErrorHandler)
 [![GitHub forks](https://img.shields.io/github/forks/tregor/Tritonium?style=flat-square)](https://github.com/tregor/Tritonium/network)
-[![GitHub stars](https://img.shields.io/github/stars/tregor/Tritonium?style=flat-square)](https://github.com/tregor/Tritonium/stargazers)
 [![GitHub license](https://img.shields.io/github/license/tregor/Tritonium?style=flat-square)](LICENSE)
 
 
@@ -76,14 +75,16 @@ This command will execute every well-formated migration SQL-file:
 - [X] Move commands to TMD.
 - [X] Implement global access for app vars
 - [X] Exceptions system
-- [ ] Exceptions and Errors classification
-- [ ] Installation wizard.
+- [ ] Router - Made Closure routes with anonumys functions
+- [ ] Router - Make regex for \<controller\>, \<action\> and etc.
 - [ ] Implement events system
-- [ ] Made ActiveRecord models
-- [ ] Make Dependency Injection Container for components
-- [ ] Take care to in-framework Error Handler
-- [ ] Improve templating engine and view renderer.
 - [ ] Improve wiki and in-code comments.
+- [ ] Exceptions and Errors classification
+- [ ] Take care to in-framework Error Handler
+- [ ] Make Dependency Injection Container for components
+- [ ] Make ActiveRecord models
+- [ ] Installation wizard.
+- [ ] Improve templating engine and view renderer.
 - [ ] Refactor code.
 - [ ] Take a cup of coffee.
 
