@@ -7,9 +7,9 @@
 [![GitHub license](https://img.shields.io/github/license/tregor/Tritonium?style=flat-square)](LICENSE)
 
 
-Tritonium is a microframework that is used by me on some projects.
+Tritonium is an MVC microframework that is used by me on some projects.
 
-It contains some useful services and libraries, simple templating engine and other features.
+It contains some helpful services and libraries, a simple templating engine, and other features.
 
 ---
 ## Navigation
@@ -39,13 +39,13 @@ Or **install it manually**:
 
     $ wget https://github.com/tregor/Tritonium/archive/master.zip
 
-After downloading you will need to install framework, init DB connection and set some other settings.
+After downloading you will need to install the framework, init DB connection, and set some other settings.
 
-First edit config.php for your needs and init DB connection
+First, edit config.php for your needs and init DB connection
 
     nano config.php
 
-To start installation script you need to execute:
+To start the installation script you need to execute:
 
     php tmd core/install
 
@@ -61,7 +61,7 @@ To create any new migration SQL (install/update/delete operations) use this comm
 
 ### Execute migrations
 
-This command will execute every well-formated migration SQL-file:
+This command will execute every well-formatted migration SQL file:
 
     php tmd migrations/migrate
 
@@ -70,18 +70,16 @@ This command will execute every well-formated migration SQL-file:
 - [X] Make model system.
 - [X] Develop Request service.
 - [X] Make full PDO system, not MYSQL only.
-- [X] Make bootstrapping out of autoload.
+- [X] Make bootstrapping out of autoloading.
 - [X] Add routing and implement controllers.
 - [X] Move commands to TMD.
 - [X] Implement global access for app vars
 - [X] Exceptions system
-- [ ] Router - Made Closure routes with anonumys functions
-- [ ] Router - Make regex for \<controller\>, \<action\> and etc.
+- [X] Improve routing system with dynamical in-path params
 - [ ] Implement events system
 - [ ] Improve wiki and in-code comments.
 - [ ] Exceptions and Errors classification
 - [ ] Take care to in-framework Error Handler
-- [ ] Make Dependency Injection Container for components
 - [ ] Make ActiveRecord models
 - [ ] Installation wizard.
 - [ ] Improve templating engine and view renderer.
@@ -108,6 +106,6 @@ This project is licensed under **MIT license**. See the [LICENSE](LICENSE) file 
 
 [By tregor 2021](https://tregor.ru/)
 
-Please let me know if you have feedback or suggestions.
+Please let me know if you have any feedback or suggestions.
 
 You can contact me on [Facebook](https://www.facebook.com/tregor1997) or through my [email](mailto:tregor1997@gmail.com).
