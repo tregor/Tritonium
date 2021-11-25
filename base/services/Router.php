@@ -26,6 +26,7 @@ class Router extends BaseService
 	public function hasRoute($path)
 	{
 		foreach ($this->routes as $route => $action) {
+			$regex = [];
 			$original = str_replace('/', '\/', $route);
 			preg_match_all('/^.*<(?:(.*):)?(.*)>.*$/m', $route, $matches, PREG_SET_ORDER, 0);
 
