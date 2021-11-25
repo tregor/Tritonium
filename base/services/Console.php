@@ -16,7 +16,7 @@ class Console
 
 	public static function args($key = NULL)
 	{
-		return ($key === NULL) ? Console::$args : Console::$args[$key] ?: NULL ;
+		return ($key === NULL) ? Console::$args : (Console::$args[$key] ?: NULL);
 	}
 
 	public static function error($str, $fatal = FALSE){

@@ -48,7 +48,8 @@ class Request extends BaseService
 	{
 		$this->rawData 		= parse_url(@$_SERVER['REQUEST_URI']) ?: [];
 		$this->method 		= @$_SERVER['REQUEST_METHOD'] ?: "GET";
-		$this->path 		= array_filter(explode("/", ($this->rawData['path'] ?: "/")));
+		// $this->path 		= array_filter(explode("/", ($this->rawData['path'] ?: "/")));
+		$this->path 		= $this->rawData['path'] ?: "/";
 		$this->body 		= file_get_contents("php://input");
 		$this->headers 		= getallheaders();
 		$this->cookies 		= $_COOKIE;	//TODO: Create CookieJar object

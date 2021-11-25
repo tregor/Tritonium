@@ -5,18 +5,25 @@ namespace Tritonium\Base;
 class BaseClass extends \StdClass
 {
 
-	/**
-	 * Configures an object with the initial property values.
-	 * @param object $object the object to be configured
-	 * @param array $properties the property initial values given in terms of name-value pairs.
-	 * @return object the object itself
-	 */
-	public static function configure($object, $properties)
-	{
-		foreach ($properties as $name => $value) {
-			$object->$name = $value;
-		}
+    public function __set($name, $value): void
+    {
+        $this->$name = $value;
+    }
 
-		return $object;
-	}
+    public function __get($method)
+    {
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        }
+        $method = 'get' . $method;
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        }
+
+        return NULL;
+    }
+
+    private function __clone() { }
+
+    private function __wakeup() { }
 }

@@ -4,6 +4,7 @@ namespace Tritonium\Base;
 
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\Log;
+use Tritonium\Base\Services\Router;
 use Tritonium\Base\Exceptions\BaseException;
 
 class App extends BaseClass
@@ -12,12 +13,18 @@ class App extends BaseClass
 	public static $type;
 	public static $config;
 
+	/**
+	 * @var $view View object
+	 */
+	public static $view;
+
 	public static function init($config)
 	{
 		/**
 		 * Settings from config.php
 		 */
 		App::$config = $config;
+		// TODO: Rewrite Config class and system
 		// foreach($config as $key => $val){
 		//     Config::set($key, $val);
 		// }
@@ -29,14 +36,38 @@ class App extends BaseClass
 		    ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 		    ini_set('error_log', DIR_ROOT . "log/errors.log");
 		}
-
-		spl_autoload_register([App::class, 'loadClass']);
-
-		//TODO: KRIVO@! Perepisat and refactor code
-		// Console::$args = $argv;
+		
 		App::$components = self::components($config['components']);
 		App::$view = App::$components->view;
 		session_start();
+	}
+
+	public static function start($type = 'web')
+	{
+		App::$type = $type;
+		$request = App::$components->request;
+		$router = App::$components->router;
+		list($controller, $action) = ['default', 'index'];
+
+		switch (App::$type) {
+			case 'web':
+				$args = Console::args();
+				$route = $request->path();
+				if ($route[0] === "/") $route = substr($route, 1);
+				list($controller, $action) = explode("/", $route);
+				break;
+			case 'tmd':
+				$args = Console::args();
+				$route = Console::args(1);
+				list($controller, $action) = explode("/", $route);
+				break;
+		}
+
+		if ($router->hasRoute($route)) {
+			return $router->route($route);
+		}
+
+		return $router->exec($controller, $action);
 	}
 
 	public static function debug()
@@ -48,7 +79,7 @@ class App extends BaseClass
 	{
 		$class = basename(str_replace(['\\', 'Tritonium'], ['/', ''], $className));
 		$dir = strtolower(dirname(str_replace(['\\', 'Tritonium'], ['/', ''], $className)));
-		$path = App::$config['app']['root'] . $dir . '/' . $class . '.php';
+		$path = __DIR__ . '/..' . $dir . '/' . $class . '.php';
 
 		if (is_file($path)) {
     		require_once $path;

@@ -8,15 +8,17 @@ class BaseService extends BaseClass
 {
     public function __construct($data = [])
     {
-        BaseClass::configure($this, $data);
+        if (!empty($data)) {
+            return self::configure($this, $data);
+        }
     }
 
-	public function __set($name, $value): void
-	{
-		$this->$name = $value;
-	}
+    public static function configure($object, $properties)
+    {
+        foreach ($properties as $name => $value) {
+            $object->$name = $value;
+        }
 
-    private function __clone() { }
-
-    private function __wakeup() { }
+        return $object;
+    }
 }

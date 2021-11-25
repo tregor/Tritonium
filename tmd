@@ -5,61 +5,12 @@
  */
 require_once __DIR__ . '/base/bootstrap.php';
 
+use Tritonium\Base\App;
 use Tritonium\Base\Controllers\BaseController;
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\Log;
 use Tritonium\App\Controllers;
 
 Console::init($argv);
-if (Console::args(0) != "tmd") {
-	// If it is not tmd...
-	die("It's not tmd app!");
-}
-
-
-/**
- * Routing system
- */
-list($controller, $action) = isset(Console::$args[1]) ? explode("/", Console::$args[1]) : ["Default", "Index"];
-$controllerName = toCamelCase($controller) ?: "Default";
-$controllerAction = toCamelCase($action) ?: "Index";
-
-$controllerBaseFile = DIR_BASE . "controllers/" . $controllerName . "Controller.php";
-$controllerBaseName = "Tritonium\\Base\\Controllers\\".$controllerName."Controller";
-$controllerAppFile = DIR_APP . "controllers/" . $controllerName . "Controller.php";
-$controllerAppName = "Tritonium\\App\\Controllers\\".$controllerName."Controller";
-
-
-/** 
- * Debug notes
- * Routing must be based like Controller/Action
- * Controller is Controller name. Default is actions for DefaultController
- * Action is method name inside Controller
- */
-// var_dump([
-//     'controller' => $controller,
-//     'action' => $action,
-//     'controllerName' => $controllerName,
-//     'controllerAction' => $controllerAction,
-//     'controllerBaseFile' => $controllerBaseFile,
-//     'controllerBaseName' => $controllerBaseName,
-//     'controllerAppFile' => $controllerAppFile,
-//     'controllerAppName' => $controllerAppName,
-// ]);
-// die();
-
-if (file_exists($controllerAppFile)) {
-    require_once $controllerAppFile;
-    $controllerClass = new $controllerAppName;
-} elseif (file_exists($controllerBaseFile)) {
-    require_once $controllerBaseFile;
-    $controllerClass = new $controllerBaseName;
-} else{
-    throw new \Exception('Controller "' . $controllerName . 'Controller" not found');
-}
-
-if ($controllerClass instanceof Tritonium\Base\Controllers\BaseController) {
-    $response = $controllerClass->execute($controllerAction);
-
-    return $response;
-}
+App::init($config);
+App::start('tmd'); 

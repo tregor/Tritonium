@@ -15,12 +15,7 @@
  * 
  */
 
-
 use Tritonium\Base\App;
-use Tritonium\Base\Services\Config;
-use Tritonium\Base\Services\Console;
-use Tritonium\Base\Services\View;
-use Tritonium\Base\Services\Request;
 
 define("ROOT",               __DIR__ . "/../");
 define("DIR_ROOT",           __DIR__ . "/../");
@@ -37,4 +32,4 @@ require_once(DIR_BASE . "functions.php");
 require_once(DIR_BASE . "BaseClass.php");
 require_once(DIR_BASE . "App.php");
 
-App::init($config);
+spl_autoload_register([App::class, 'loadClass']);
