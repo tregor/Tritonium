@@ -53,7 +53,6 @@ class App extends BaseClass
 			case 'web':
 				$args = Console::args();
 				$route = $request->path();
-				if ($route[0] === "/") $route = substr($route, 1);
 				list($controller, $action) = explode("/", $route);
 				break;
 			case 'tmd':

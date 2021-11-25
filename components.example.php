@@ -9,6 +9,9 @@ use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\PDO;
 
 return [
+        'console' => Console::class,
+        'request' => Request::class,
+        'view' => View::class,
         'db' => [
             'class' => Tritonium\Base\Services\PDO::class,
             'data' => [
@@ -19,7 +22,17 @@ return [
                 'pass' => '',
             ],
         ],
-        'console' => Console::class,
-        'request' => Request::class,
-        'view' => View::class,
+        'router' => [
+            'class' => Router::class,
+            'data' => [
+                'routes' => [
+                    'admin' => 'DefaultController@index',
+                    'admin/model' => 'DefaultController@all',
+                    'admin/model/create' => 'DefaultController@create',
+                    'admin/model/<id:\d+>' => 'DefaultController@item',
+                    'admin/model/<id>/update' => 'DefaultController@update',
+                    'admin/model/<id>/delete' => 'DefaultController@delete',
+                ],
+            ],
+        ],
     ];

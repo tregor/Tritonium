@@ -77,7 +77,7 @@ class Router extends BaseService
 
 			if (preg_match('/^' . $original . '$/m', $path, $args)) {
 				array_shift($args);
-				$args = array_combine(array_keys($regex), $args);
+				$args = @array_combine(array_keys($regex), $args);
 	
 				if (gettype($action) == 'string') {
 					list($controller, $action) = explode("@", str_replace('Controller', '' , $action));
