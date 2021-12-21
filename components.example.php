@@ -35,4 +35,12 @@ return [
                 ],
             ],
         ],
+        'sentry' => [
+            'class' => Tritonium\Base\Services\SentryService::class,
+            'data' => [
+                'dsn' => 'https://12345678912345678912345678900@o123456.ingest.sentry.io/1234567',
+                'level' => E_ALL,
+                'defaults' => TRUE,
+            ],
+        ],
     ];

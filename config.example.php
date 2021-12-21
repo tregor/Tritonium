@@ -7,23 +7,10 @@
 $config = [
     'app' => [
         'debug' => TRUE,
-        'root' => dirname(__DIR__),
+        'root' => __DIR__,
+        'server' => basename(__DIR__),
     ],
-    'components' => [
-        'db' => [
-            'class' => Tritonium\Base\Services\PDO::class,
-            'data' => [
-                'type' => 'mysql',
-                'host' => 'localhost',
-                'name' => 'dbname',
-                'user' => 'root',
-                'pass' => '',
-            ],
-        ],
-        'console' => Console::class,
-        'request' => Request::class,
-        'view' => View::class,
-    ],
+    'components' => require __DIR__ . '/components.php',
     'log' => [
         'name'      => 'Tritonium',
         'path'      => 'logs/main.log',
