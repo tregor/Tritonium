@@ -6,7 +6,7 @@ use Tritonium\Base\Controllers\BaseController;
 use Tritonium\Base\Services\Console;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\Services\Log;
-use Tritonium\Base\Services\App;
+use Tritonium\Base\App;
 use Tritonium\Base\Models\Migrations;
 
 class MigrationsController extends BaseController
@@ -29,7 +29,7 @@ class MigrationsController extends BaseController
 				break;
 			default:
 				Console::success("Bye-bye!");
-				break;
+				exit;
 		}
 		$tableName = strtolower(Console::input("Enter table name: "));
 
@@ -43,7 +43,7 @@ class MigrationsController extends BaseController
 			`id`         int      NOT NULL AUTO_INCREMENT,
 			`param`      text,
 			`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			`update_at`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			`updated_at`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
 		);
 		SQL;
@@ -148,5 +148,49 @@ class MigrationsController extends BaseController
 				Migrations::save($migration);
 			}
 		}
+	}
+
+	public function actionDrop()
+	{
+		switch (Console::input("This will drop all tables, confirm? (Y/n): ")){
+			case "Y":
+				break;
+			default:
+				Console::success("Bye-bye!", TRUE);
+				exit;
+		}
+
+		$db = App::$components->db;
+		$tables = Migrations::all();
+		foreach ($tables as $table) {
+			Console::info("Droping table '{$table['name']}'...");
+			$sql = "DROP TABLE `{$table['name']}`";
+			$db->prepare($sql)->execute();
+			$table['status'] = Migrations::STATUS_DELETED;
+			Migrations::save($table);
+		}
+
+		Console::success("All migrations reverted!");
+	}
+
+	public function actionTruncate()
+	{
+		switch (Console::input("This will clean all tables, confirm? (Y/n): ")){
+			case "Y":
+				break;
+			default:
+				Console::success("Bye-bye!", TRUE);
+				exit;
+		}
+
+		$db = App::$components->db;
+		$tables = Migrations::all();
+		foreach ($tables as $id => $table) {
+			Console::info("Truncating table '{$table['name']}'...");
+			$sql = "TRUNCATE TABLE `{$table['name']}`";
+			$db->prepare($sql)->execute();
+		}
+
+		Console::success("All tables cleared!");
 	}
 }

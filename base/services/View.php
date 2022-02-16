@@ -18,20 +18,29 @@ namespace Tritonium\Base\Services;
  * 
  */
 class View extends BaseService {
+	protected $defaults = [];
 	private $data = [];
 	private $headers = [];
 	private $httpcode = 200;
 
-	public function renderJSON($data)
+	public function renderJSON($result, $status = TRUE)
 	{
-		if (is_array($data)) {
-			print(json_encode($data, JSON_PRETTY_PRINT));
-		}
+		$data = [
+			'status' => $status,
+			'result' => $result,
+		];
+		print(json_encode($data, JSON_PRETTY_PRINT));
 	}
 	
 	public function render($template = 'default', $data = [])
 	{
 		$this->data = $data;
+		$data = array_merge_recursive($this->defaults, $this->data);
+		// var_dump($data);
+		// TODO: Debug bar View data
+
+		exec('cp ' . DIR_ROOT . 'view/src ' . DIR_ROOT . 'web/src');
+		exec('cp ' . DIR_ROOT . 'web/src ' . DIR_ROOT . 'view/src');
 
 		ob_start();
 		extract($data);
@@ -43,9 +52,9 @@ class View extends BaseService {
 		printf("%s\r\n", $output);
 	}
 
-	public function include($template = 'default')
+	public function include($template = 'default', $data = [])
 	{
-		$data = $this->data;
+		$data = array_merge_recursive($this->defaults, $this->data, $data);
 
 		ob_start();
 		extract($data);
@@ -85,6 +94,15 @@ class View extends BaseService {
 	{
 		$this->httpcode = $code;
 		return $this;
+	}
+
+	public function redirect($url, $code = 303)
+	{
+		$this->setHeader('Location', $url);
+		$this->setCode($code);
+		$this->sendHeaders();
+
+		die('Redirected...');
 	}
 
 	// static function img($imageName)

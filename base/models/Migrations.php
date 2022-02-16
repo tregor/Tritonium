@@ -8,6 +8,7 @@ class Migrations extends BaseModel
 	const STATUS_READY       = 1;
 	const STATUS_PROCESS     = 2;
 	const STATUS_ERROR       = 3;
+	const STATUS_DELETED     = 4;
 
 	/**
 	 * @var string Table in which model's data is stored
@@ -22,8 +23,7 @@ class Migrations extends BaseModel
 	/**
 	 * @var string[] List of attributes we will have access
 	 */
-	protected $attributes
-		= [
+	protected $attributes = [
 			'id',
 			'name',
 			'status',

@@ -11,20 +11,8 @@ use Tritonium\Base\Exceptions\ControllerException;
 class DefaultController extends BaseController
 {
 	public function actionIndex(){
-		var_dump(Console::$args);
-	}
-
-	public function actionTest()
-	{
-		$db = App::$components->db;
-
-		var_dump($db->query("SHOW TABLES;")->fetchAll());
-	}
-
-	public function actionMigrations()
-	{
-		$migrations = Migrations::all();
-
-		var_dump($migrations);
+		App::$components->view->setCode(200)
+		->setHeader('Content-Type', 'text/html;charset=UTF8')
+		->render('default');
 	}
 }

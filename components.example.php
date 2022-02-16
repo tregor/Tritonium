@@ -27,11 +27,15 @@ return [
             'data' => [
                 'routes' => [
                     'admin' => 'DefaultController@index',
-                    'admin/model' => 'DefaultController@all',
-                    'admin/model/create' => 'DefaultController@create',
-                    'admin/model/<id:\d+>' => 'DefaultController@item',
-                    'admin/model/<id>/update' => 'DefaultController@update',
-                    'admin/model/<id>/delete' => 'DefaultController@delete',
+
+                    'admin/<modelname>/list' => 'ModelsController@modelList',
+                    'admin/<modelname>/create' => 'ModelsController@modelCreate',
+                    'admin/<modelname>/save' => 'ModelsController@modelSave',
+                    'admin/<modelname>/<id>/save' => 'ModelsController@modelSave',
+                    'admin/<modelname>/<id>/view' => 'ModelsController@modelView',
+                    'admin/<modelname>/<id>/edit' => 'ModelsController@modelEdit',
+                    'admin/<modelname>/<id>/copy' => 'ModelsController@modelCopy',
+                    'admin/<modelname>/<id>/delete' => 'ModelsController@modelDelete',
                 ],
             ],
         ],

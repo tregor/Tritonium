@@ -30,9 +30,14 @@ class Request extends BaseService
 	protected $headers = [];
 
 	/**
-	 * @var array Parsed request headers
+	 * @var array $_COOKIES
 	 */
 	protected $cookies = [];
+
+	/**
+	 * @var array $_SESSION
+	 */
+	protected $session = [];
 
 	/**
 	 * @var array GET params
@@ -53,6 +58,7 @@ class Request extends BaseService
 		$this->body 		= file_get_contents("php://input");
 		$this->headers 		= getallheaders();
 		$this->cookies 		= $_COOKIE;	//TODO: Create CookieJar object
+		$this->session 		= $_SESSION;	//TODO: Make session object
 		$this->paramsGET 	= $_GET;
 		$this->paramsPOST 	= $_POST;
 	}
@@ -92,6 +98,11 @@ class Request extends BaseService
 		return $this->cookies;
 	}
 
+	public function session()
+	{
+		return $this->session;
+	}
+
 	public function get($key)
 	{
 		return $this->paramsGET[$key];
@@ -104,7 +115,7 @@ class Request extends BaseService
 
 	public function input($name, $method = NULL)
 	{
-		$params = array_merge($this->paramsGET, $this->paramsPOST);
+		$data = array_merge($this->paramsGET, $this->paramsPOST);
 	
 		if (strtoupper($method) == "GET"){
 			$data = $this->paramsGET;
@@ -116,13 +127,14 @@ class Request extends BaseService
 		if (!empty($data[$name])) {
 			return $data[$name];
 		} else {
-			throw new \Exception('Param '.$name.' not found');
+			// throw new \Exception('Param '.$name.' not found');
+			return NULL;
 		}
 	}
 
 	public function inputAll($method = NULL)
 	{
-		$params = array_merge($this->paramsGET, $this->paramsPOST);
+		$data = array_merge($this->paramsGET, $this->paramsPOST);
 	
 		if (strtoupper($method) == "GET"){
 			$data = $this->paramsGET;
@@ -132,5 +144,10 @@ class Request extends BaseService
 		}
 
 		return $data;
+	}
+
+	public function has($name, $method = NULL)
+	{
+		return ($this->input($name, $method) !== NULL);
 	}
 }
