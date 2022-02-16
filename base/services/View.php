@@ -36,6 +36,11 @@ class View extends BaseService {
 	{
 		$this->data = $data;
 		$data = array_merge_recursive($this->defaults, $this->data);
+		// var_dump($data);
+		// TODO: Debug bar View data
+
+		exec('cp ' . DIR_ROOT . 'view/src ' . DIR_ROOT . 'web/src');
+		exec('cp ' . DIR_ROOT . 'web/src ' . DIR_ROOT . 'view/src');
 
 		ob_start();
 		extract($data);
