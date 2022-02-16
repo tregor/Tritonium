@@ -6,8 +6,9 @@ use Tritonium\Base\BaseClass;
 
 class BaseController extends BaseClass
 {
-	private $controllerName;
-	private $controllerAction;
+	protected $controllerName;
+	protected $controllerAction;
+	protected $beforeExclude = [];
 
 	public function __construct(){
 		$this->controllerName = get_class($this);
@@ -15,7 +16,7 @@ class BaseController extends BaseClass
 
 	public function execute($action)
 	{
-		$this->controllerAction = "action".$action;
+		$this->controllerAction = 'action' . $action;
 		if (method_exists($this->controllerName, $this->controllerAction)) {
 			return @call_user_func([$this->controllerName, $this->controllerAction]);
 		}else{
@@ -26,6 +27,13 @@ class BaseController extends BaseClass
 	public function action($action, $params = [])
     {
 		$this->controllerAction = "action".$action;
+		if (method_exists($this->controllerName, 'beforeAction') && !in_array($this->controllerAction, $this->beforeExclude)) {
+			$beforeStatus = @call_user_func([$this->controllerName, 'beforeAction']);
+			if ($beforeStatus === FALSE) {
+				throw new \Exception('Before action fucked in controller \"' . $this->controllerName . '\".');
+			}
+		}
+
         if (method_exists($this->controllerName, $this->controllerAction)) {
             $reflection = new \ReflectionMethod($this->controllerName, $this->controllerAction);
 
