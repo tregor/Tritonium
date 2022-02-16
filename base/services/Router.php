@@ -71,7 +71,7 @@ class Router extends BaseService
 				}
 
 				foreach ($regex as $key => $mask) {
-					$original = preg_replace('/<(.*)>/m', '(' . $mask . ')', $original, 1);
+					$original = preg_replace('/<(.*)>/Um', '(' . $mask . ')', $original, 1);
 				}
 			}
 
@@ -79,6 +79,7 @@ class Router extends BaseService
 				array_shift($args);
 				$args = @array_combine(array_keys($regex), $args);
 	
+				// var_dump([$path, $original, $action, $args]);die();
 				if (gettype($action) == 'string') {
 					list($controller, $action) = explode("@", str_replace('Controller', '' , $action));
 					return $this->exec($controller, $action, $args);

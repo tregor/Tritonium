@@ -21,6 +21,8 @@ define("ROOT",               __DIR__ . "/../");
 define("DIR_ROOT",           __DIR__ . "/../");
 define("DIR_APP",            __DIR__ . "/../app/");
 define("DIR_BASE",           __DIR__ . "/../base/");
+define("DIR_LOGS",           __DIR__ . "/../logs/");
+define("DIR_VIEW",           __DIR__ . "/../view/");
 
 define("DIR_CONTROLLERS",	 __DIR__ . "/../app/controllers/");
 define("DIR_MODELS",		 __DIR__ . "/../app/models/");

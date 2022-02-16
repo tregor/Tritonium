@@ -23,7 +23,7 @@ class App extends BaseClass
 		/**
 		 * Settings from config.php
 		 */
-		App::$config = $config;
+		App::$config = json_decode(json_encode($config), FALSE);
 		// TODO: Rewrite Config class and system
 		// foreach($config as $key => $val){
 		//     Config::set($key, $val);
@@ -53,12 +53,12 @@ class App extends BaseClass
 			case 'web':
 				$args = Console::args();
 				$route = $request->path();
-				list($controller, $action) = explode("/", $route);
+				@list($controller, $action) = explode("/", $route);
 				break;
 			case 'tmd':
 				$args = Console::args();
 				$route = Console::args(1);
-				list($controller, $action) = explode("/", $route);
+				@list($controller, $action) = explode("/", $route);
 				break;
 		}
 
@@ -71,7 +71,7 @@ class App extends BaseClass
 
 	public static function debug()
 	{
-		return (App::$config['app']['debug'] === TRUE);
+		return (App::$config->app->debug === TRUE);
 	}
 
 	public static function loadClass($className)
@@ -84,13 +84,16 @@ class App extends BaseClass
     		require_once $path;
     		return TRUE;
 		}else{
-			var_dump([
-				'className' => $className,
-				'class' => $class,
-				'dir' => $dir,
-				'path' => $path,
-			]);
-			throw new BaseException(App::class, "Can't load dynamic class {$className} on path {$path}");
+			if (App::debug()) {
+				// var_dump([
+				// 	'className' => $className,
+				// 	'class' => $class,
+				// 	'dir' => $dir,
+				// 	'path' => $path,
+				// ]);
+			}
+			// throw new BaseException(App::class, "Can't load dynamic class {$className} on path {$path}");
+			return FALSE;
 		}
 	}
 

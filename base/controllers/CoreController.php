@@ -82,13 +82,13 @@ class CoreController extends BaseController
 		 */
 
 		$installationData['needInstall'] = FALSE;
-		file_put_contents(App::$config['app']['root'] . 'installation.json', json_encode($installationData, JSON_PRETTY_PRINT));
+		file_put_contents(App::$config->app->root . 'installation.json', json_encode($installationData, JSON_PRETTY_PRINT));
 		Console::info("Installation finished!");
 	}
 
 	public function actionNginx()
 	{
-		$serverName = App::$config['app']['server'];
+		$serverName = App::$config->app->server;
 		$rootDir = "/var/www/{$serverName}/web/";
 		$logAccess = "{$rootDir}../logs/access.log";
 		$logError = "{$rootDir}../logs/error.log";

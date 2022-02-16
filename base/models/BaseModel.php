@@ -10,14 +10,43 @@ use PDOException;
 
 class BaseModel extends BaseClass
 {
-
 	protected $connect;
-	protected $key = "ID";
+
+	/**
+	 * @var string Default key of model
+	 */
+	protected $key = "id";
+
+	/**
+	 * @var string[] List of attributes 
+	 */
+	protected $attributes = [];
+
+	/**
+	 * @var string[] List of attributes that can be read
+	 */
+	protected $secured = [
+		'id',
+		'created_at',
+		'updated_at'
+	];
+
+	/**
+	 * @var string[] List of labels for output
+	 */
+	protected $labels = [
+		'id' => 'ID',
+		'created_at' => 'Created At',
+		'updated_at' => 'Updated At',
+	];
+
+
 
 	public function __construct()
 	{
-		$database = App::$components->db;
-		$this->connect = $database->instance();
+		// $database = App::$components->db;
+		// $this->connect = $database->instance();
+		$this->connect = App::$components->db;
 	}
 
 	static public function all()
@@ -168,4 +197,28 @@ class BaseModel extends BaseClass
 		}
 	}
 
+	static public function delete($value, $key = '')
+	{
+		$model = new static;
+		if (!$key) {
+			$key = $model->key;
+		}
+
+		$stmt = $model->connect->prepare('DELETE FROM ' . $model->table . ' WHERE ' . $key . ' = ?');
+		return ($stmt->execute([$value]));
+	}
+
+	static public function getAttributes()
+	{
+		$model = new static;
+
+		return array_diff($model->attributes, $model->secured);
+	}
+
+	public static function getLabel($attribute)
+	{
+		$model = new static;
+
+		return $model->labels[$attribute] ?: $attribute;
+	}
 }

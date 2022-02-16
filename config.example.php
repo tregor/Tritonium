@@ -6,6 +6,7 @@
 
 $config = [
     'app' => [
+        'env' => 'dev',
         'debug' => TRUE,
         'root' => __DIR__,
         'server' => basename(__DIR__),
