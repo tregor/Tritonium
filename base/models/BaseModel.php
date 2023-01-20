@@ -48,24 +48,49 @@ class BaseModel extends BaseClass
 		// $this->connect = $database->instance();
 		$this->connect = App::$components->db;
 	}
-
-	static public function all()
+	
+	static public function all($limit = 1000): array {
+		$model = new static;
+		
+		return $model->execute('SELECT * FROM `' . $model->table .'` LIMIT '.$limit);
+	}
+	
+	static public function count(): int {
+		return count(self::all());
+	}
+	
+	static public function allLimit($limit = 1000, $offset = 0, $order_by = '', $sort_asc = TRUE)
 	{
 		$model = new static;
-
-		return $model->execute('SELECT * FROM ' . $model->table);
+		$limit = ($limit > 0) ? ' LIMIT '.$limit : '';
+		$offset = ($offset > 0) ? ' OFFSET '.$offset : '';
+		$order_by = (!empty($order_by)) ? ' ORDER BY `'.$order_by.'`' : '';
+		$sort = $sort_asc ? ' ASC' : ' DESC';
+		
+		$sql = 'SELECT * FROM `' . $model->table .'` '
+		       .$order_by
+		       .$sort
+		       .$limit
+		       .$offset;
+		
+		return $model->execute($sql);
 	}
 
 	protected function execute($sql, $params = [])
 	{
-		$attributes = array_flip($this->attributes);
-		$result = [];
-		$statement = $this->connect->prepare($sql);
-		$statement->execute($params);
-		foreach ($statement as $row) {
-			$result[] = array_filter($row, function ($data) use ($attributes) {
-				return isset($attributes[$data]);
-			}, ARRAY_FILTER_USE_KEY);
+		try {
+			$attributes = array_flip($this->attributes);
+			$result     = [];
+			$statement  = $this->connect->prepare($sql);
+			$statement->execute($params);
+			
+			foreach ($statement as $row) {
+				$result[] = array_filter($row, function ($data) use ($attributes) {
+					return isset($attributes[$data]);
+				}, ARRAY_FILTER_USE_KEY);
+			}
+		}catch (\Exception $e){
+			Log::debug($e->getMessage());
 		}
 
 		return $result;
@@ -78,7 +103,7 @@ class BaseModel extends BaseClass
 			$key = $model->key;
 		}
 
-		return $model->execute('SELECT * FROM ' . $model->table . ' WHERE ' . $key . ' = ?', [$value]);
+		return $model->execute('SELECT * FROM `' . $model->table . '` WHERE ' . $key . ' = ?', [$value]);
 	}
 
 	static public function findOrFail($value, $key = FALSE){
@@ -101,10 +126,10 @@ class BaseModel extends BaseClass
 	static public function findBy($data)
 	{
 		$model = new static;
-		$sql = 'SELECT * FROM ' . $model->table . ' WHERE ';
+		$sql = "SELECT * FROM `{$model->table}` WHERE ";
 		$values = [];
 		foreach ($data as $key => $value) {
-			$sql .= $key . ' = ? AND ';
+			$sql .= "`{$key}` = ? AND ";
 			$values[] = $value;
 		}
 		$sql = trim($sql, ' AND ');
@@ -122,6 +147,56 @@ class BaseModel extends BaseClass
 	}
 
 	static public function save($data)
+	{
+		try {
+			$model = new static;
+
+			$attributes = array_flip($model->attributes);
+			$data = array_filter($data, function ($data) use ($attributes) {
+				return isset($attributes[$data]);
+			}, ARRAY_FILTER_USE_KEY);
+
+			$sql = 'UPDATE ' . $model->table . ' SET ';
+			if (empty($data[$model->key])) {
+				throw new Exception('Not found primary key');
+			}
+			$primary_key = $data[$model->key];
+			unset($data[$model->key]);
+			foreach ($data as $key => $value) {
+				$sql .= '`' . $key . '` = :' . $key . ', ';
+			}
+			$sql = trim($sql, ', ');
+			$sql .= ' WHERE `' . $model->key . '` = :' . $model->key;
+			// var_dump($sql);
+			// var_dump($data);
+			$statement = $model->connect->prepare($sql);
+			foreach ($data as $column => $value) {
+				// $mysqli_tmp = new \mysqli();
+				// $value_clean = mysqli_real_escape_string($mysqli_tmp, $value);
+				// $value_clean = $model->connect->quote($value);
+				// var_dump([$column, $value, $value_clean]);
+				$statement->bindValue(':' . $column, $value);
+				// $statement->bindValue(':' . $column, $value_clean);
+			}
+			$statement->bindValue(':' . $model->key, $primary_key);
+			// var_dump($statement);
+			// $statement->debugDumpParams();
+
+			try {
+				$statement->execute();
+				return $model->connect->lastInsertId();
+			} catch (PDOException $e) {
+				$model->connect->rollback();
+				return "Error1 " . $e->getMessage();
+			}
+		} catch (PDOException $e) {
+			return "Error2 " . $e->getMessage();
+		} catch (Throwable $e) {
+			return "Error3 " . $e->getMessage();
+		}
+	}
+
+	static public function save_old($data)
 	{
 		try {
 			$model = new static;
@@ -168,7 +243,7 @@ class BaseModel extends BaseClass
 			$data = array_filter($data, function ($data) use ($attributes) {
 				return isset($attributes[$data]);
 			}, ARRAY_FILTER_USE_KEY);
-			$sql = 'INSERT INTO ' . $model->table . ' (';
+			$sql = 'INSERT INTO `' . $model->table . '` (';
 			foreach ($data as $column => $value) {
 				$sql .= '`' . $column . '`, ';
 			}
@@ -204,21 +279,32 @@ class BaseModel extends BaseClass
 			$key = $model->key;
 		}
 
-		$stmt = $model->connect->prepare('DELETE FROM ' . $model->table . ' WHERE ' . $key . ' = ?');
+		$stmt = $model->connect->prepare('DELETE FROM `' . $model->table . '` WHERE ' . $key . ' = ?');
 		return ($stmt->execute([$value]));
 	}
 
 	static public function getAttributes()
 	{
 		$model = new static;
-
-		return array_diff($model->attributes, $model->secured);
+		$attributes = [];
+		
+		foreach ($model->attributes as $attr){
+			if (in_array($attr, $model->secured)) continue;
+			$attributes[] = $attr;
+		}
+		
+		return $attributes;
 	}
 
 	public static function getLabel($attribute)
 	{
 		$model = new static;
 
-		return $model->labels[$attribute] ?: $attribute;
+		return @$model->labels[$attribute] ?: mb_convert_case(str_replace('_', ' ', $attribute), MB_CASE_TITLE);
+	}
+	
+	public static function getKey() {
+		$model = new static;
+		return $model->key;
 	}
 }

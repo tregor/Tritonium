@@ -79,12 +79,14 @@ This command will execute every well-formatted migration SQL file:
 - [ ] Implement events system
 - [ ] Improve wiki and in-code comments.
 - [ ] Exceptions and Errors classification
-- [ ] Take care to in-framework Error Handler (Inline+Full mode)
+- [ ] Take care to in-framework Error Handler (Inline+Full mode+PrettyVarDumper)
 - [ ] Make ActiveRecord models
 - [ ] Installation wizard.
 - [ ] Improve templating engine and view renderer.
 - [ ] Refactor code.
 - [ ] Take a cup of coffee.
+- [ ] Make an automatic class scanner-mapper
+- [ ] Dictionaries and ENUMs as services
 
 ## Contribute
 

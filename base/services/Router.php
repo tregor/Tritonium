@@ -13,7 +13,7 @@ class Router extends BaseService
 	private $controllerAction;
 	private $controllerObj;
 
-	public function addRoute($route = '', $function)
+	public function addRoute($route, $function)
 	{
 		self::$routes[$route] = $function;
 	}
@@ -57,9 +57,11 @@ class Router extends BaseService
 
 	public function route($path)
 	{
+		$this->path = $path;
 		foreach ($this->routes as $route => $action) {
+			$regex = [];
 			$original = str_replace('/', '\/', $route);
-			preg_match_all('/^.*<(?:(.*):)?(.*)>.*$/m', $route, $matches, PREG_SET_ORDER, 0);
+			preg_match_all('/<(?:(.*):)?(.*)>/Um', $route, $matches, PREG_SET_ORDER, 0);
 
 			foreach ($matches as $match) {
 				array_shift($match);
@@ -71,17 +73,21 @@ class Router extends BaseService
 				}
 
 				foreach ($regex as $key => $mask) {
-					$original = preg_replace('/<(.*)>/Um', '(' . $mask . ')', $original, 1);
+					$original = preg_replace('/<(.*)>/m', '(' . $mask . ')', $original, 1);
 				}
 			}
 
 			if (preg_match('/^' . $original . '$/m', $path, $args)) {
 				array_shift($args);
+				if (count(array_keys($regex)) > 1) {
+					$args = explode('/', $args[0]);
+				}
 				$args = @array_combine(array_keys($regex), $args);
 	
 				// var_dump([$path, $original, $action, $args]);die();
 				if (gettype($action) == 'string') {
 					list($controller, $action) = explode("@", str_replace('Controller', '' , $action));
+					// var_dump([$path, $original, $controller, $action, $args, $args_original, $regex]); die();
 					return $this->exec($controller, $action, $args);
 				}elseif (gettype($action) == 'object'){
 

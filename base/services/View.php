@@ -18,29 +18,34 @@ namespace Tritonium\Base\Services;
  * 
  */
 class View extends BaseService {
-	protected $defaults = [];
 	private $data = [];
 	private $headers = [];
 	private $httpcode = 200;
 
-	public function renderJSON($result, $status = TRUE)
+	public function renderJSON($data)
 	{
-		$data = [
-			'status' => $status,
-			'result' => $result,
-		];
-		print(json_encode($data, JSON_PRETTY_PRINT));
+		if (is_array($data)) {
+			print(json_encode($data, JSON_PRETTY_PRINT));
+		}
+	}
+
+	public function renderRaw($data)
+	{
+		ob_start();
+		echo $data;
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		$this->sendHeaders();
+		printf("%s\r\n", $output);
 	}
 	
 	public function render($template = 'default', $data = [])
 	{
 		$this->data = $data;
-		$data = array_merge_recursive($this->defaults, $this->data);
-		// var_dump($data);
-		// TODO: Debug bar View data
-
-		exec('cp ' . DIR_ROOT . 'view/src ' . DIR_ROOT . 'web/src');
-		exec('cp ' . DIR_ROOT . 'web/src ' . DIR_ROOT . 'view/src');
+		exec('cp -r '.DIR_VIEW.'src/ '.DIR_WEB.'src/', $output, $retrun_var);
+		// rcopy(DIR_VIEW.'src/',DIR_WEB.'src/');
+// var_dump($output, $retrun_var);
 
 		ob_start();
 		extract($data);
@@ -52,9 +57,9 @@ class View extends BaseService {
 		printf("%s\r\n", $output);
 	}
 
-	public function include($template = 'default', $data = [])
+	public function include($template = 'default')
 	{
-		$data = array_merge_recursive($this->defaults, $this->data, $data);
+		$data = $this->data;
 
 		ob_start();
 		extract($data);
@@ -64,8 +69,8 @@ class View extends BaseService {
 
 		printf("%s\r\n", $output);
 	}
-
-	protected function parseTemplatePath($template)
+	
+	public function parseTemplatePath($template)
 	{
 		$file = str_replace(".", "/", $template) . ".php";
 		$path = DIR_VIEW . $file;
@@ -79,6 +84,7 @@ class View extends BaseService {
 
 	protected function sendHeaders()
 	{
+		http_response_code($this->httpcode);
 		foreach ($this->headers as $headerName => $headerValue){
 			header("{$headerName}: {$headerValue}");
 		}

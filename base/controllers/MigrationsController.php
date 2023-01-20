@@ -93,8 +93,9 @@ class MigrationsController extends BaseController
 				}
 			}
 
-			preg_match_all('/(\d{4})_(\d{2})_(\d{2})_(\d{2})(\d{2})(\d{2})_(.*)_(.*)_table\.sql/mU', $filename, $matches, PREG_SET_ORDER, 0);
-
+			$mask = preg_match_all('/(\d{4})_(\d{2})_(\d{2})_(\d{2})(\d{2})(\d{2})_(.*)_(.*)_table\.sql/mU', $filename, $matches, PREG_SET_ORDER, 0);
+			if (!$mask) continue;
+			
 			$info = [
 				"year"      => $matches[0][1],
 				"month"     => $matches[0][2],
@@ -138,7 +139,7 @@ class MigrationsController extends BaseController
 				Migrations::save($migration);
 
 				Console::print("Migration \"{$info['filename']}\" created successful.", "i");
-			}catch (Exception $e){
+			}catch (\Exception $e){
 				if ($connection->inTransaction()){
 					$connection->rollBack();
 				}
@@ -163,6 +164,7 @@ class MigrationsController extends BaseController
 		$db = App::$components->db;
 		$tables = Migrations::all();
 		foreach ($tables as $table) {
+			if (strlen($table['name']) == 0) continue;
 			Console::info("Droping table '{$table['name']}'...");
 			$sql = "DROP TABLE `{$table['name']}`";
 			$db->prepare($sql)->execute();

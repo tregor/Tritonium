@@ -20,26 +20,31 @@ class App extends BaseClass
 
 	public static function init($config)
 	{
-		/**
-		 * Settings from config.php
-		 */
+		/* Settings from config.php */
 		App::$config = json_decode(json_encode($config), FALSE);
-		// TODO: Rewrite Config class and system
-		// foreach($config as $key => $val){
-		//     Config::set($key, $val);
-		// }
-
+		
+		session_start();
 		if (App::debug()) {
-		    ini_set('log_errors', TRUE);
-		    ini_set('display_errors', TRUE);
-		    ini_set('ignore_repeated_errors', TRUE);
-		    ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
-		    ini_set('error_log', DIR_ROOT . "log/errors.log");
+			ini_set('log_errors', TRUE);
+			ini_set('display_errors', TRUE);
+			ini_set('ignore_repeated_errors', TRUE);
+			ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+			ini_set('error_log', DIR_ROOT . "log/errors.log");
+		}else{
+			ini_set('log_errors', TRUE);
+			ini_set('display_errors', FALSE);
+			ini_set('ignore_repeated_errors', TRUE);
+			ini_set('error_reporting', E_ALL);
+			ini_set('error_log', DIR_ROOT . "log/errors.log");
 		}
 		
 		App::$components = self::components($config['components']);
 		App::$view = App::$components->view;
-		session_start();
+		
+		// TODO: Rewrite Config class and system
+//		foreach($config['app']['settings'] as $key => $val){
+//			Settings::setValue($key, $val);
+//		}
 	}
 
 	public static function start($type = 'web')
@@ -61,6 +66,9 @@ class App extends BaseClass
 				@list($controller, $action) = explode("/", $route);
 				break;
 		}
+//		if (empty($controller)) $controller = 'Default';
+//		if (empty($action)) $action = 'Index';
+//		var_dump([$controller, $action]);
 
 		if ($router->hasRoute($route)) {
 			return $router->route($route);

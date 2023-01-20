@@ -68,7 +68,7 @@ class Console
 		}
 	}
 
-	public function input($label = '(Y/n) ')
+	public static function input($label = '(Y/n) ')
 	{
 		return readline($label);
 	}
