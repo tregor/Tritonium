@@ -4,23 +4,12 @@ namespace Tritonium\Base\Services;
 
 class PDO extends \PDO
 {
-	protected $dsn		= NULL;
-	protected $user 	= NULL;
-	protected $pass 	= NULL;
-
-	public function __construct($data = NULL)
-	{
+	protected $dsn = null;
+	
+	public function __construct($data = null) {
 		$this->dsn = "{$data['type']}:host={$data['host']};dbname={$data['name']}";
-		$this->user = $data['user'];
-		$this->pass = $data['pass'];
-
-		// var_dump([
-		// 	$this->dsn = "{$data['type']}:host={$data['host']};dbname={$data['name']}",
-		// 	$this->user = $data['user'],
-		// 	$this->pass = $data['pass'],
-		// ]);
-
-		parent::__construct($this->dsn, $this->user, $this->pass,[\PDO::ATTR_PERSISTENT => TRUE]);
+		
+		parent::__construct($this->dsn, $data['user'], $data['pass'], [\PDO::ATTR_PERSISTENT => true]);
 		$this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		$this->exec("SET CHARACTER SET utf8");
 	}
