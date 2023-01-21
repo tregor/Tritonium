@@ -3,6 +3,7 @@
 namespace Tritonium\Base\Models;
 
 use Tritonium\Base\App;
+use Tritonium\Base\Services\ActiveQuery;
 use Tritonium\Base\Services\Config;
 use Tritonium\Base\BaseClass;
 use Exception;
@@ -55,10 +56,10 @@ class ActiveModel extends BaseClass
 		return $this->table;
 	}
 	
-	public static function find() {
+	public static function find(): ActiveQuery {
 		$model      = new static;
 		$modelclass = get_class($model);
-		var_dump($modelclass);
+//		var_dump($modelclass);
 		
 		$query = new ActiveQuery($modelclass);
 		$query = $query->select('*')->from($model->getTable());
@@ -71,6 +72,12 @@ class ActiveModel extends BaseClass
 			$this->props[$name] = $value;
 		}
 		//		parent::__set($name, $value);
+	}
+	
+	public function __get($name) {
+		if (isset($this->props[$name])) {
+			return $this->props[$name];
+		}
 	}
 	
 	public function save() {
@@ -150,7 +157,7 @@ class ActiveModel extends BaseClass
 	
 	public function delete(){
 		$sql = 'DELETE FROM `' . $this->getTable() . '` WHERE ' . $this->getKey() . ' = ?';
-		var_dump($sql.$this->getKeyValue());
+//		var_dump($sql.$this->getKeyValue());
 		$stmt = $this->connect->prepare($sql);
 		return ($stmt->execute([$this->getKeyValue()]));
 	}
