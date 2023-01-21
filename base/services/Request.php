@@ -90,6 +90,10 @@ class Request extends BaseService
 		return $this->headers[$key];
 	}
 	
+	public function headerExist($key) {
+		return array_key_exists($key, $this->headers);
+	}
+	
 	public function cookies(): array {
 		return $this->cookies;
 	}
