@@ -63,7 +63,6 @@ class ActiveModel extends BaseClass
 	public static function find(): ActiveQuery {
 		$model      = new static;
 		$modelclass = get_class($model);
-//		var_dump($modelclass);
 		
 		$query = new ActiveQuery($modelclass);
 		$query = $query->select('*')->from($model->getTable());
@@ -75,7 +74,6 @@ class ActiveModel extends BaseClass
 		if (in_array($name, $this->attributes)) {
 			$this->props[$name] = $value;
 		}
-		//		parent::__set($name, $value);
 	}
 	
 	public function __get($name) {

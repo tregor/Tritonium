@@ -131,11 +131,13 @@ class ActiveQuery extends BaseClass
 		return trim($sql) . ';';
 	}
 	
-	public function all() {
+	public function all($asArray = FALSE) {
+		if ($asArray) $this->modelclass = '';
 		return $this->execute();
 	}
 	
-	public function one() {
+	public function one($asArray = FALSE) {
+		if ($asArray) $this->modelclass = '';
 		return $this->execute()[0];
 	}
 	
