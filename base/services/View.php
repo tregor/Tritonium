@@ -24,6 +24,10 @@ class View extends BaseService {
 
 	public function renderJSON($data)
 	{
+		$this->setHeader('Content-Type', 'application/json');
+		$this->setCode(200);
+		$this->sendHeaders();
+		
 		if (is_array($data)) {
 			print(json_encode($data, JSON_PRETTY_PRINT));
 		}

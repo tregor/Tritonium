@@ -86,6 +86,10 @@ class Request extends BaseService
 		return $this->headers;
 	}
 	
+	public function header($key) {
+		return $this->headers[$key];
+	}
+	
 	public function cookies(): array {
 		return $this->cookies;
 	}

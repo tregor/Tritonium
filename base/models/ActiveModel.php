@@ -36,7 +36,7 @@ class ActiveModel extends BaseClass
 	protected $secured;
 	/* @deprecated */
 	protected $labels;
-	private $isNewRecord = true;
+	protected $isNewRecord = true;
 	
 	public function __construct($isNew = true) {
 		$this->connect     = App::$components->db;
@@ -50,6 +50,10 @@ class ActiveModel extends BaseClass
 		
 		$rs        = $this->connect->query('SHOW KEYS FROM ' . $this->getTable() . ' WHERE Key_name = \'PRIMARY\';');
 		$this->key = $rs->fetchColumn(4);
+	}
+	
+	public function __toArray(): array {
+		return $this->props;
 	}
 	
 	public function getTable() {
@@ -108,11 +112,15 @@ class ActiveModel extends BaseClass
 			try {
 				$statement->execute();
 				
-				return $this->connect->lastInsertId();
+				$model_id = $this->connect->lastInsertId();
+				$this->isNewRecord = false;
+				$this->props = $this->byID($model_id)->__toArray();
+				
+				return $model_id;
 			} catch (PDOException $e) {
 				$this->connect->rollback();
 				
-				return "Error" . $e->getMessage();
+				return FALSE;
 			}
 		} else {
 			//Saving updated record
@@ -136,9 +144,10 @@ class ActiveModel extends BaseClass
 			
 			try {
 				$statement->execute();
-				$statement->debugDumpParams();
 				
-				return $this->connect->lastInsertId();
+				$model_id = $this->connect->lastInsertId();
+				
+				return $model_id;
 			} catch (PDOException $e) {
 				$this->connect->rollback();
 				
@@ -147,18 +156,53 @@ class ActiveModel extends BaseClass
 		}
 	}
 	
-	public function getKey(){
-		return $this->key;
-	}
+//	public function getKey(): string{
+//		return $this->key;
+//	}
+//
+//	public function getAttributes(): array{
+//		return $this->attributes;
+//	}
+//
+//	public function getKeyValue(): int{
+//		return $this->props[$this->key];
+//	}
 	
-	public function getKeyValue(){
-		return $this->props[$this->key];
-	}
-	
-	public function delete(){
+	public function delete(): bool{
 		$sql = 'DELETE FROM `' . $this->getTable() . '` WHERE ' . $this->getKey() . ' = ?';
-//		var_dump($sql.$this->getKeyValue());
 		$stmt = $this->connect->prepare($sql);
 		return ($stmt->execute([$this->getKeyValue()]));
+	}
+	
+	/**
+	 * @deprecated
+	 * @return array
+	 */
+	public static function all(){
+		$models = self::find()->all();
+		array_walk($models, function ($model, $key) use (&$models){
+			$models[$key] = $model->__toArray();
+		});
+		return $models;
+	}
+	public static function getAttributes(): array{
+		$model = new static;
+		return $model->attributes;
+	}
+	public static function getKey(): string{
+		$model = new static;
+		return $model->key;
+	}
+	public function getKeyValue(): string{
+		return $this->props[$this->key];
+	}
+	public function getID(): int{
+		return $this->getKeyValue();
+	}
+	public function byID($key){
+		return $this->find()->where($this->getKey(),'=',$key)->one();
+	}
+	public static function getLabel($key){
+		return $key;
 	}
 }

@@ -27,7 +27,7 @@ class BaseClass extends \StdClass
 
     public function __wakeup() { }
 
-    public function toArray()
+    public function __toArray()
     {
         $reflection = new \ReflectionClass($this);
         $props = $reflection->getProperties();

@@ -29,6 +29,7 @@ class ActiveQuery extends BaseClass
 	private $orderBy = '';
 	private $sortBy = 'ASC';
 	private $limitBy = -1;
+	private $offsetBy = -1;
 	private $bindParams = [];
 	
 	private $connect;
@@ -89,6 +90,14 @@ class ActiveQuery extends BaseClass
 		return $this;
 	}
 	
+	public function offset(int $offset) {
+		if ($offset != 0) {
+			$this->offsetBy = $offset;
+		}
+		
+		return $this;
+	}
+	
 	public function count() {
 		return count($this->execute());
 	}
@@ -97,7 +106,6 @@ class ActiveQuery extends BaseClass
 		$sql       = $this->__toString();
 		$statement = $this->connect->prepare($sql);
 		$statement->execute();
-		//		var_dump($sql);
 		
 		if ($this->modelclass == null) {
 			$result = [];
@@ -117,13 +125,10 @@ class ActiveQuery extends BaseClass
 		$sql_where   = $this->conditions === [] ? '' : ' WHERE ' . implode(' AND ', $this->conditions);
 		$sql_orderBy = $this->orderBy === '' ? '' : ' ORDER BY ' . $this->orderBy . ' ' . $this->sortBy;
 		$sql_limit   = ($this->limitBy != -1) ? ' LIMIT ' . $this->limitBy : '';
+		$sql_offset   = ($this->offsetBy != -1) ? ' OFFSET ' . $this->offsetBy : '';
 		
-		$sql = "SELECT {$sql_select} FROM {$sql_from} {$sql_where} {$sql_orderBy} {$sql_limit}";
-		$sql = trim($sql) . ';';
-		
-		var_dump($sql);
-		
-		return $sql;
+		$sql = "SELECT {$sql_select} FROM {$sql_from}{$sql_where}{$sql_orderBy}{$sql_limit}{$sql_offset}";
+		return trim($sql) . ';';
 	}
 	
 	public function all() {
@@ -132,5 +137,9 @@ class ActiveQuery extends BaseClass
 	
 	public function one() {
 		return $this->execute()[0];
+	}
+	
+	public function exist() {
+		return (count($this->execute()) > 0);
 	}
 }
