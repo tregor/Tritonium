@@ -94,8 +94,12 @@ class Request extends BaseService
 		return array_key_exists($key, $this->headers);
 	}
 	
-	public function cookies(): array {
-		return $this->cookies;
+	public function cookies($key = '') {
+		if (empty($key)){
+			return $this->cookies;
+		}else{
+			return @$this->cookies[$key];
+		}
 	}
 	
 	public function session(): array {
@@ -145,11 +149,18 @@ class Request extends BaseService
 		}
 	}
 	
-	public function hasFiles(): bool {
-		return ( ! empty($this->files));
+	public function hasFile(string $filename): bool {
+		return (isset($this->files[$filename]));
 	}
 	
+	/* @deprecated */
 	public function uploadedFiles(): array {
+		return $this->files;
+	}
+	public function file($filename) {
+		return (isset($this->files[$filename])) ? $this->files[$filename] : NULL;
+	}
+	public function filesAll() {
 		return $this->files;
 	}
 }
