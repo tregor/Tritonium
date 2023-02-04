@@ -111,7 +111,8 @@ class View extends BaseService {
 		$this->setHeader('Location', $url);
 		$this->setCode($code);
 		$this->sendHeaders();
-
+		
+		echo('<script>window.location.replace("'.$url.'");</script>');
 		die('Redirected...');
 	}
 
