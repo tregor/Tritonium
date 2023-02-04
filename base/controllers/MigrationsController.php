@@ -195,4 +195,30 @@ class MigrationsController extends BaseController
 
 		Console::success("All tables cleared!");
 	}
+	
+	public function actionRollback(){
+		$db = App::$components->db;
+		$table = array_reverse(Migrations::all())[0];
+		var_dump($table);
+		
+		//TODO Improve to read migration and rollback with action like rollback UPDATE()
+		$dump_file = $this->dumpTableFile($table['name'], 'WeedExpress');
+		Console::info("Dropping table '{$table['name']}'...");
+		Console::info("Dump saved on  '{$dump_file}'.");
+		$sql = "DROP TABLE `{$table['name']}`";
+		$db->prepare($sql)->execute();
+		
+		Migrations::delete($table['id']);
+	}
+	
+	private function dumpTableFile($table, $db_name = ''){
+		$db_user = 'mysqladmin';
+		$db_pass = '9hIbduu6YBtL';
+		
+		$sql_file = DIR_LOGS.'/sql/'.time().'_'.$db_name.'.'.$table.'.dump.sql';
+		$command = "mysqldump --opt --default-character-set=UTF8 --single-transaction --protocol=TCP --user={$db_user} --password={$db_pass} {$db_name} > {$sql_file}";
+		shell_exec($command);
+		
+		return $sql_file;
+	}
 }
