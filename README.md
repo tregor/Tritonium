@@ -71,22 +71,24 @@ This command will execute every well-formatted migration SQL file:
 - [X] Develop Request service.
 - [X] Make full PDO system, not MYSQL only.
 - [X] Make bootstrapping out of autoloading.
+- [X] Make an automatic class scanner-mapper
 - [X] Add routing and implement controllers.
 - [X] Move commands to TMD.
 - [X] Implement global access for app vars
 - [X] Exceptions system
 - [X] Improve routing system with dynamical in-path params
+- [X] Make ActiveRecord models
 - [ ] Implement events system
-- [ ] Improve wiki and in-code comments.
+- [ ] Remake Migrations controller and core UI
 - [ ] Exceptions and Errors classification
 - [ ] Take care to in-framework Error Handler (Inline+Full mode+PrettyVarDumper)
-- [X] Make ActiveRecord models
-- [ ] Installation wizard.
 - [ ] Improve templating engine and view renderer.
+- [ ] Dictionaries and ENUMs as services
+- [ ] Installation wizard.
+- [ ] Improve wiki and in-code comments.
+- [ ] Add caching service built-in ActiveRecord
 - [ ] Refactor code.
 - [ ] Take a cup of coffee.
-- [ ] Make an automatic class scanner-mapper
-- [ ] Dictionaries and ENUMs as services
 
 ## Contribute
 
