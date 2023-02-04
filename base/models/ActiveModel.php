@@ -69,6 +69,10 @@ class ActiveModel extends BaseClass
 		
 		return $query;
 	}
+	public static function byID($id): ActiveModel {
+		$model      = new static;
+		return $model->find()->where($model->getKey(), '=', $id)->one();
+	}
 	
 	public function __set($name, $value): void {
 		if (in_array($name, $this->attributes)) {
@@ -197,9 +201,9 @@ class ActiveModel extends BaseClass
 	public function getID(): int{
 		return $this->getKeyValue();
 	}
-	public function byID($key){
-		return $this->find()->where($this->getKey(),'=',$key)->one();
-	}
+//	public function byID($key){
+//		return $this->find()->where($this->getKey(),'=',$key)->one();
+//	}
 	public static function getLabel($key){
 		return $key;
 	}
