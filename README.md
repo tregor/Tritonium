@@ -84,6 +84,10 @@ This command will execute every well-formatted migration SQL file:
 - [ ] Take care to in-framework Error Handler (Inline+Full mode+PrettyVarDumper)
 - [ ] Improve templating engine and view renderer.
 - [ ] Dictionaries and ENUMs as services
+- [ ] Make Session and Cookies as JARs
+- [ ] Make Helpers
+  - [ ] CSV helper, will create object from csv file
+  - [ ] Array helper, jump thru array with string address
 - [ ] Installation wizard.
 - [ ] Improve wiki and in-code comments.
 - [ ] Add caching service built-in ActiveRecord

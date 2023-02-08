@@ -17,20 +17,27 @@
 
 use Tritonium\Base\App;
 
-const ROOT     = __DIR__ . "/../";
-const DIR_ROOT = __DIR__ . "/../";
-const DIR_APP  = __DIR__ . "/../app/";
-const DIR_BASE = __DIR__ . "/../base/";
-const DIR_LOGS = __DIR__ . "/../logs/";
-const DIR_VIEW = __DIR__ . "/../view/";
-const DIR_WEB  = __DIR__ . "/../web/";
+const ROOT       = __DIR__ . "/../";
+const DIR_ROOT   = __DIR__ . "/../";
+const DIR_APP    = __DIR__ . "/../app/";
+const DIR_BASE   = __DIR__ . "/../base/";
+const DIR_CONFIG = __DIR__ . "/../config/";
+const DIR_LOGS   = __DIR__ . "/../logs/";
+const DIR_VIEW   = __DIR__ . "/../view/";
+const DIR_WEB    = __DIR__ . "/../web/";
 
 const DIR_CONTROLLERS = __DIR__ . "/../app/controllers/";
 const DIR_MODELS      = __DIR__ . "/../app/models/";
 const DIR_SERVICES    = __DIR__ . "/../app/services/";
 
+@define("WEB_BASE", $_SERVER['SERVER_NAME']);
+@define("WEB_SRC", $_SERVER['SERVER_NAME'] . 'src/');
+@define("WEB_CSS", $_SERVER['SERVER_NAME'] . 'src/css/');
+@define("WEB_IMG", $_SERVER['SERVER_NAME'] . 'src/img/');
+@define("WEB_JS", $_SERVER['SERVER_NAME'] . 'src/js/');
+
 require_once(DIR_ROOT . "vendor/autoload.php");
-require_once(DIR_ROOT . "config.php");
+require_once(DIR_ROOT . "config/config.php");
 require_once(DIR_BASE . "functions.php");
 require_once(DIR_BASE . "BaseClass.php");
 require_once(DIR_BASE . "App.php");

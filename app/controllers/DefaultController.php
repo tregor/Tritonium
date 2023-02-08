@@ -14,6 +14,9 @@ class DefaultController extends BaseController
 	public function actionIndex() {
 		App::$components->view->setCode(200)->setHeader('Content-Type', 'text/html;charset=UTF8')->render('default');
 	}
+	public function actionTesttest() {
+		App::$view->setCode(200)->setHeader('Content-Type', 'text/html;charset=UTF8')->render('default');
+	}
 	
 	public function actionTest() {
 		$users = ActiveUser::find()->where('token', 'IS', NULL)->all();
