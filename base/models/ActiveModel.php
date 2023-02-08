@@ -4,27 +4,9 @@ namespace Tritonium\Base\Models;
 
 use Tritonium\Base\App;
 use Tritonium\Base\Services\ActiveQuery;
-use Tritonium\Base\Services\Config;
 use Tritonium\Base\BaseClass;
-use Exception;
 use PDOException;
 
-
-/**
- * $user = new User();
- * $user->name = 'Vasya';
- * $user->save();
- *
- * $user->find(1);
- * $user->delete();
- *
- * $user->find()->where('active', '=', 1)->all();
- * $user->find()->where('active', '=', 1)->andWhere('id', '>', 1)->orderBy('id')->sort('ASC')->limit(5)->all(); //LAST 5 RECORDS
- * $user->find()->all();
- * $user->find()->where('active', '=', 1)->one();
- * $user->find()->where('active', '=', 1)->count();
- *
- */
 class ActiveModel extends BaseClass
 {
 	protected $connect;
@@ -32,10 +14,6 @@ class ActiveModel extends BaseClass
 	protected $key;
 	protected $attributes = [];
 	protected $props = [];
-	/* @deprecated */
-	protected $secured;
-	/* @deprecated */
-	protected $labels;
 	protected $isNewRecord = true;
 	
 	public function __construct($isNew = true) {
@@ -158,18 +136,6 @@ class ActiveModel extends BaseClass
 		}
 	}
 	
-//	public function getKey(): string{
-//		return $this->key;
-//	}
-//
-//	public function getAttributes(): array{
-//		return $this->attributes;
-//	}
-//
-//	public function getKeyValue(): int{
-//		return $this->props[$this->key];
-//	}
-	
 	public function delete(): bool{
 		$sql = 'DELETE FROM `' . $this->getTable() . '` WHERE ' . $this->getKey() . ' = ?';
 		$stmt = $this->connect->prepare($sql);
@@ -181,19 +147,13 @@ class ActiveModel extends BaseClass
 	 * @return array
 	 */
 	public static function all(){
-		$models = self::find()->all();
-		array_walk($models, function ($model, $key) use (&$models){
-			$models[$key] = $model->__toArray();
-		});
-		return $models;
+		return self::find()->all(TRUE);
 	}
-	public static function getAttributes(): array{
-		$model = new static;
-		return $model->attributes;
+	public function getAttributes(): array{
+		return $this->attributes;
 	}
-	public static function getKey(): string{
-		$model = new static;
-		return $model->key;
+	public function getKey(): string{
+		return $this->key;
 	}
 	public function getKeyValue(): string{
 		return $this->props[$this->key];
@@ -201,9 +161,6 @@ class ActiveModel extends BaseClass
 	public function getID(): int{
 		return $this->getKeyValue();
 	}
-//	public function byID($key){
-//		return $this->find()->where($this->getKey(),'=',$key)->one();
-//	}
 	public static function getLabel($key){
 		return $key;
 	}

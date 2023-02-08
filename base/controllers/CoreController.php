@@ -82,7 +82,7 @@ class CoreController extends BaseController
 		 */
 
 		$installationData['needInstall'] = FALSE;
-		file_put_contents(App::$config->app->root . 'installation.json', json_encode($installationData, JSON_PRETTY_PRINT));
+		file_put_contents(DIR_ROOT . 'installation.json', json_encode($installationData, JSON_PRETTY_PRINT));
 		Console::info("Installation finished!");
 	}
 

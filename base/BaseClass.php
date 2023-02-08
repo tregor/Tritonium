@@ -4,6 +4,7 @@ namespace Tritonium\Base;
 
 class BaseClass extends \StdClass
 {
+	private $events = [];
 
     public function __set($name, $value): void
     {
@@ -44,4 +45,34 @@ class BaseClass extends \StdClass
 
         return $array;
     }
+	
+	public function trigger($name, $data = []){
+		if (isset($this->events[$name])){
+			$handlers = $this->events[$name];
+			
+			foreach ($handlers as $handler){
+				$event = $handler[1];
+				$event->initiator = $this;
+				$event->data = $data;
+				
+				call_user_func($handler[0], $event);
+			}
+		}
+	
+	}
+	
+	public function on($name, $function, $stop = FALSE){
+		$event = new BaseEvent();
+		$event->name = $name;
+		$event->stop = $stop;
+		
+		$this->events[$name][] = [
+			$function,
+			$event,
+		];
+	}
+	
+	public function off($name, $function = NULL){
+	
+	}
 }
