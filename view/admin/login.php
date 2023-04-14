@@ -10,7 +10,8 @@ use Tritonium\Base\App;
  * @var $models Array of models
  */
 ?>
-<? App::$components->view->include('admin.block.head') ?>
+<?
+App::$components->view->include('admin.block.head') ?>
 <div class="login-page">
     <div class="container d-flex align-items-center position-relative py-5">
         <div class="card shadow-sm w-100 rounded overflow-hidden bg-none">
@@ -59,4 +60,5 @@ use Tritonium\Base\App;
     </div>
 </div>
 
-<? App::$components->view->include('admin.block.footer') ?>
+<?
+App::$components->view->include('admin.block.footer') ?>

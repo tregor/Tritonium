@@ -13,12 +13,15 @@ $page = [
     'title' => 'Tables',
 ];
 ?>
-<? App::$components->view->include('admin.block.head') ?>
-<? App::$components->view->include('admin.block.header') ?>
+<?
+App::$components->view->include('admin.block.head') ?>
+<?
+App::$components->view->include('admin.block.header') ?>
 
 <div class="d-flex align-items-stretch">
     <!-- Sidebar Navigation-->
-        <? App::$components->view->include('admin.block.sidebar') ?>
+    <?
+    App::$components->view->include('admin.block.sidebar') ?>
     <!-- End Sidebar Navigation-->
 
     <!-- Main Content -->
@@ -1237,4 +1240,5 @@ $page = [
 
 <script src="/src/js/charts-custom.js"></script>
 <script src="/src/js/charts-home.js"></script>
-<? App::$components->view->include('admin.block.footer') ?>
+<?
+App::$components->view->include('admin.block.footer') ?>
