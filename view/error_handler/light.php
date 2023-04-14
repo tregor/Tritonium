@@ -29,7 +29,8 @@ use Tritonium\Base\App;
     <div class="block">
         <div class="head">
             <span class="errType">[<?= $theme['error']['code'] ?>] <?= $theme['error']['type'] ?></span>
-            <span id="HelpMeStack"><a href="https://stackoverflow.com/search?q=[php] <?= $theme['error']['message'] ?>" target="_blank">Help me, Stack Overflow!</a></span>
+            <span id="HelpMeStack"><a href="https://stackoverflow.com/search?q=[php] <?= $theme['error']['message'] ?>"
+                                      target="_blank">Help me, Stack Overflow!</a></span>
         </div>
         <div class="head">
             <span><?= $theme['error']['message'] ?></span>
@@ -71,12 +72,16 @@ use Tritonium\Base\App;
             <div id="varGET">
                 <pre>
                 <?
-                $varString = print_r($theme['variables'], TRUE);
+                $varString = print_r($theme['variables'], true);
 
                 $varString = preg_replace("/Array\n.*\(/", "[", $varString);
                 $varString = preg_replace("/\)\n/", "]", $varString);
                 $varString = preg_replace("/\[(.*)\]/mU", "'$1'", $varString);
-                $varString = str_replace(["'GET'", "'POST'", "'COOKIE'", "'SESSION'", "'SERVER'"], ["\$_GET", "\$_POST", "\$_COOKIE", "\$_SESSION", "\$_SERVER"], $varString);
+                $varString = str_replace(
+                    ["'GET'", "'POST'", "'COOKIE'", "'SESSION'", "'SERVER'"],
+                    ["\$_GET", "\$_POST", "\$_COOKIE", "\$_SESSION", "\$_SERVER"],
+                    $varString
+                );
 
                 echo $varString;
                 ?>
