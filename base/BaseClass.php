@@ -45,6 +45,14 @@ class BaseClass extends \StdClass
 
         return $array;
     }
+
+    public function getClassName() {
+        $path = explode('\\', $this::class);
+        return array_pop($path);
+    }
+    public function getClassNameFull() {
+        return get_class($this);
+    }
 	
 	public function trigger($name, $data = []){
 		if (isset($this->events[$name])){

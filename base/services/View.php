@@ -4,130 +4,124 @@ namespace Tritonium\Base\Services;
 
 /**
  *
- * App::$view->render('template.name', $params);
+ * App::$components->view->render('template.name', $params);
  * Will render HTML from "/view/template/name.php"
- * 
+ *
  * Inside template it can be includes like
- * App::$view->include('block.name');
+ * App::$components->view->include('block.name');
  * Will include HTML from "/view/block/name.php"
  * Detect parent template inside!
- * 
+ *
  * TODO: Resources compilation and copy from "/view/src" to "/web/src" only useful!
  * TODO: Implement CSS and JS Assets like this: https://qna.habr.com/q/450128
- * 
- * 
+ *
+ *
  */
-class View extends BaseService {
-	private $data = [];
-	private $headers = [];
-	private $httpcode = 200;
+class View extends BaseService
+{
+    private $data = [];
+    private $headers = [];
+    private $httpcode = 200;
 
-	public function renderJSON($data)
-	{
-		$this->setHeader('Content-Type', 'application/json');
-		$this->setCode(200);
-		$this->sendHeaders();
-		
-		if (is_array($data)) {
-			print(json_encode($data, JSON_PRETTY_PRINT));
-		}
-	}
+    public function include($template = 'default') {
+        $data = $this->data;
 
-	public function renderRaw($data)
-	{
-		ob_start();
-		echo $data;
-		$output = ob_get_contents();
-		ob_end_clean();
+        ob_start();
+        extract($data);
+        require $this->parseTemplatePath($template);
+        $output = ob_get_contents();
+        ob_end_clean();
 
-		$this->sendHeaders();
-		printf("%s\r\n", $output);
-	}
-	
-	public function render($template = 'default', $data = [])
-	{
-		$this->data = $data;
-		exec('cp -r '.DIR_VIEW.'src/ '.DIR_WEB.'src/', $output, $retrun_var);
-		// rcopy(DIR_VIEW.'src/',DIR_WEB.'src/');
-// var_dump($output, $retrun_var);
+        printf("%s\r\n", $output);
+    }
 
-		ob_start();
-		extract($data);
-		require_once $this->parseTemplatePath($template);
-		$output = ob_get_contents();
-		ob_end_clean();
+    public function parseTemplatePath($template) {
+        $file = str_replace(".", "/", $template) . ".php";
+        $path = DIR_VIEW . $file;
 
-		$this->sendHeaders();
-		printf("%s\r\n", $output);
-	}
+        if (file_exists($path)) {
+            return $path;
+        } else {
+            throw new \Exception('Template file not found on "' . $path . '"!');
+        }
+    }
 
-	public function include($template = 'default')
-	{
-		$data = $this->data;
+    public function redirect($url, $code = 303) {
+        $this->setHeader('Location', $url);
+        $this->setCode($code);
+        $this->sendHeaders();
 
-		ob_start();
-		extract($data);
-		require $this->parseTemplatePath($template);
-		$output = ob_get_contents();
-		ob_end_clean();
+        echo('<script>window.location.replace("' . $url . '");</script>');
+        die('Redirected...');
+    }
 
-		printf("%s\r\n", $output);
-	}
-	
-	public function parseTemplatePath($template)
-	{
-		$file = str_replace(".", "/", $template) . ".php";
-		$path = DIR_VIEW . $file;
+    public function render($template = 'default', $data = []) {
+        $this->data = $data;
+//		 exec('cp -r '.DIR_VIEW.'src/ '.DIR_WEB.'src/', $output, $retrun_var);
+        //		 rcopy(DIR_VIEW.'src/',DIR_WEB.'src/');
+        //		 var_dump($output, $retrun_var);
 
-		if (file_exists($path)) {
-			return $path;
-		}else{
-			return FALSE;
-		}
-	}
+        ob_start();
+        extract($data);
+        require_once $this->parseTemplatePath($template);
+        $output = ob_get_contents();
+        ob_end_clean();
 
-	protected function sendHeaders()
-	{
-		http_response_code($this->httpcode);
-		foreach ($this->headers as $headerName => $headerValue){
-			header("{$headerName}: {$headerValue}");
-		}
-	}
+        $this->sendHeaders();
+        printf("%s\r\n", $output);
+    }
 
-	public function setHeader($key, $value = '')
-	{
-		$this->headers[$key] = $value;
-		return $this;
-	}
+    public function renderJSON($data) {
+        $this->setHeader('Content-Type', 'application/json');
+        $this->setCode(200);
+        $this->sendHeaders();
 
-	public function setCode($code = 200)
-	{
-		$this->httpcode = $code;
-		return $this;
-	}
+        if (is_array($data)) {
+            print(json_encode($data, JSON_PRETTY_PRINT));
+        }
+    }
 
-	public function redirect($url, $code = 303)
-	{
-		$this->setHeader('Location', $url);
-		$this->setCode($code);
-		$this->sendHeaders();
-		
-		echo('<script>window.location.replace("'.$url.'");</script>');
-		die('Redirected...');
-	}
+    public function renderRaw($data) {
+        ob_start();
+        echo $data;
+        $output = ob_get_contents();
+        ob_end_clean();
 
-	// static function img($imageName)
-	// {
-	// 	return Config::get("SITE_SRC") . "img/{$imageName}";
-	// }
+        $this->sendHeaders();
+        printf("%s\r\n", $output);
+    }
 
-	// static function css($cssFileName)
-	// {
-	// 	return Config::get("SITE_SRC") . "css/{$cssFileName}";
-	// }
+    public function setCode($code = 200) {
+        $this->httpcode = $code;
 
-	// static function js($javascriptName)
-	// {
-	// 	return Config::get("SITE_SRC") . "js/{$javascriptName}";
-	// }
+        return $this;
+    }
+
+    public function setHeader($key, $value = '') {
+        $this->headers[$key] = $value;
+
+        return $this;
+    }
+
+    protected function sendHeaders() {
+        http_response_code($this->httpcode);
+        foreach ($this->headers as $headerName => $headerValue) {
+            header("{$headerName}: {$headerValue}");
+        }
+    }
+
+    // static function img($imageName)
+    // {
+    // 	return Config::get("SITE_SRC") . "img/{$imageName}";
+    // }
+
+    // static function css($cssFileName)
+    // {
+    // 	return Config::get("SITE_SRC") . "css/{$cssFileName}";
+    // }
+
+    // static function js($javascriptName)
+    // {
+    // 	return Config::get("SITE_SRC") . "js/{$javascriptName}";
+    // }
 }

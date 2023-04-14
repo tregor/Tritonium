@@ -4,122 +4,121 @@ namespace Tritonium\Base\Services;
 
 use Tritonium\Base\Controllers\BaseController;
 
+
 class Router extends BaseService
 {
-	public $routes = [];
-	private $args;
-	private $path;
-	private $controllerName;
-	private $controllerAction;
-	private $controllerObj;
+    public $routes = [];
+    private $args;
+    private $path;
+    private $controllerName;
+    private $controllerAction;
+    private $controllerObj;
 
-	public function addRoute($route, $function)
-	{
-		self::$routes[$route] = $function;
-	}
+    public function addRoute($route, $function) {
+        self::$routes[$route] = $function;
+    }
 
-	public function getRoute($route)
-	{
-		return self::$routes[$route];
-	}
+    public function exec($controller = 'default', $action = 'index', $args = []) {
+        $this->args             = $args;
+        $this->controllerName   = toCamelCase($controller);
+        $this->controllerAction = toCamelCase($action);
+        $controllerAppName      = "Tritonium\\App\\Controllers\\" . $this->controllerName . "Controller";
+        $controllerBaseName     = "Tritonium\\Base\\Controllers\\" . $this->controllerName . "Controller";
 
-	public function hasRoute($path)
-	{
-		foreach ($this->routes as $route => $action) {
-			$regex = [];
-			$original = str_replace('/', '\/', $route);
-			preg_match_all('/^.*<(?:(.*):)?(.*)>.*$/m', $route, $matches, PREG_SET_ORDER, 0);
+        if (class_exists($controllerAppName)) {
+            $this->controllerObj = new $controllerAppName;
+        } elseif (class_exists($controllerBaseName)) {
+            $this->controllerObj = new $controllerBaseName;
+        } else {
+            throw new \Exception('Controller "' . $this->controllerName . 'Controller" not found');
+        }
 
-			foreach ($matches as $match) {
-				array_shift($match);
-				$match = array_filter($match);
-				if (count($match) == 1) {
-					$regex[$match[1]] = '.*';
-				}elseif (count($match) == 2) {
-					$regex[$match[0]] = $match[1];
-				}
+        if ($this->controllerObj instanceof BaseController) {
+            return $this->controllerObj->action($this->controllerAction, $this->args);
+        }
+    }
 
-				foreach ($regex as $key => $mask) {
-					$original = preg_replace('/<(.*)>/m', '(' . $mask . ')', $original, 1);
-				}
-			}
+    public function getRoute($route) {
+        return self::$routes[$route];
+    }
 
-			if (preg_match('/^' . $original . '$/m', $path, $args)) {
-				array_shift($args);
-				$args = array_combine(array_keys($regex), $args);
+    public function hasRoute($path) {
+        foreach ($this->routes as $route => $action) {
+            $regex    = [];
+            $original = str_replace('/', '\/', $route);
+            preg_match_all('/^.*<(?:(.*):)?(.*)>.*$/m', $route, $matches, PREG_SET_ORDER, 0);
 
-				return TRUE;
-			}
-		}
+            foreach ($matches as $match) {
+                array_shift($match);
+                $match = array_filter($match);
+                if (count($match) == 1) {
+                    $regex[$match[1]] = '.*';
+                } elseif (count($match) == 2) {
+                    $regex[$match[0]] = $match[1];
+                }
 
-		return FALSE;
-	}
+                foreach ($regex as $key => $mask) {
+                    $original = preg_replace('/<(.*)>/m', '(' . $mask . ')', $original, 1);
+                }
+            }
 
-	public function route($path)
-	{
-		$this->path = $path;
-		foreach ($this->routes as $route => $action) {
-			$regex = [];
-			$original = str_replace('/', '\/', $route);
-			preg_match_all('/<(?:(.*):)?(.*)>/Um', $route, $matches, PREG_SET_ORDER, 0);
+            if (preg_match('/^' . $original . '$/m', $path, $args)) {
+                array_shift($args);
+                $args = array_combine(array_keys($regex), $args);
 
-			foreach ($matches as $match) {
-				array_shift($match);
-				$match = array_filter($match);
-				if (count($match) == 1) {
-					$regex[$match[1]] = '.*';
-				}elseif (count($match) == 2) {
-					$regex[$match[0]] = $match[1];
-				}
+                return TRUE;
+            }
+        }
 
-				foreach ($regex as $key => $mask) {
-					$original = preg_replace('/<(.*)>/m', '(' . $mask . ')', $original, 1);
-				}
-			}
+        return FALSE;
+    }
 
-			if (preg_match('/^' . $original . '$/m', $path, $args)) {
-				array_shift($args);
-				if (count(array_keys($regex)) > 1) {
-					$args = explode('/', $args[0]);
-				}
-				$args = @array_combine(array_keys($regex), $args);
-	
-				// var_dump([$path, $original, $action, $args]);die();
-				if (gettype($action) == 'string') {
-					list($controller, $action) = explode("@", str_replace('Controller', '' , $action));
-					// var_dump([$path, $original, $controller, $action, $args, $args_original, $regex]); die();
-					return $this->exec($controller, $action, $args);
-				}elseif (gettype($action) == 'object'){
+    public function route($path) {
+        $this->path = $path;
+        foreach ($this->routes as $route => $action) {
+            $regex    = [];
+            $original = str_replace('/', '\/', $route);
+            preg_match_all('/<(?:(.*):)?(.*)>/Um', $route, $matches, PREG_SET_ORDER, 0);
 
-				}else{
-					var_dump([$action, gettype($action)]); die();
-				}
-			}
-		}
+            foreach ($matches as $match) {
+                array_shift($match);
+                $match = array_filter($match);
+                if (count($match) == 1) {
+                    $regex[$match[1]] = '.*';
+                } elseif (count($match) == 2) {
+                    $regex[$match[0]] = $match[1];
+                }
 
-		return FALSE;
-	}
+                foreach ($regex as $key => $mask) {
+                    $original = preg_replace('/<(.*)>/m', '(' . $mask . ')', $original, 1);
+                }
+            }
 
-	public function exec($controller = 'default', $action = 'index', $args = [])
-	{
-		$this->args = $args;
-		$this->controllerName = toCamelCase($controller);
-		$this->controllerAction = toCamelCase($action);
-		$controllerAppName = "Tritonium\\App\\Controllers\\".$this->controllerName."Controller";
-		$controllerBaseName = "Tritonium\\Base\\Controllers\\".$this->controllerName."Controller";
+            if (preg_match('/^' . $original . '$/m', $path, $args)) {
+                array_shift($args);
+                if (count(array_keys($regex)) > 1) {
+                    $args = explode('/', $args[0]);
+                }
+                try {
+                    $args = @array_combine(array_keys($regex), $args);
+                } catch (\Throwable) {
+                    continue;
+                }
 
-		if (class_exists($controllerAppName)) {
-		    $this->controllerObj = new $controllerAppName;
-		} elseif (class_exists($controllerBaseName)) {
-		    $this->controllerObj = new $controllerBaseName;
-		} else{
-		    throw new \Exception('Controller "' . $this->controllerName . 'Controller" not found');
-		}
+                // var_dump([$path, $original, $action, $args]);die();
+                if (gettype($action) == 'string') {
+                    [$controller, $action] = explode("@", str_replace('Controller', '', $action));
 
-		if ($this->controllerObj instanceof BaseController) {
-		    $response = $this->controllerObj->action($this->controllerAction, $this->args);
+                    // var_dump([$path, $original, $controller, $action, $args, $args_original, $regex]); die();
+                    return $this->exec($controller, $action, $args);
+                } elseif (gettype($action) == 'object') {
+                } else {
+                    var_dump([$action, gettype($action)]);
+                    die();
+                }
+            }
+        }
 
-		    return $response;
-		}
-	}
+        return FALSE;
+    }
 }

@@ -78,6 +78,7 @@ This command will execute every well-formatted migration SQL file:
 - [X] Exceptions system
 - [X] Improve routing system with dynamical in-path params
 - [X] Make ActiveRecord models
+- [ ] Improve ActiveQuery system, add OrWhere
 - [ ] Implement events system
 - [ ] Remake Migrations controller and core UI
 - [ ] Exceptions and Errors classification

@@ -13,4 +13,4 @@ tab_width = 4
 indent_style = tab
 
 [{*.ctp,*.engine,*.hphp,*.inc,*.install,*.module,*.php,*.php4,*.php5,*.php___jb_old___,*.phtml,*.profile,*.test,*.theme}]
-indent_style = tab
+indent_style = space

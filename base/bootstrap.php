@@ -17,6 +17,7 @@
 
 use Tritonium\Base\App;
 
+
 const ROOT       = __DIR__ . "/../";
 const DIR_ROOT   = __DIR__ . "/../";
 const DIR_APP    = __DIR__ . "/../app/";
@@ -30,11 +31,14 @@ const DIR_CONTROLLERS = __DIR__ . "/../app/controllers/";
 const DIR_MODELS      = __DIR__ . "/../app/models/";
 const DIR_SERVICES    = __DIR__ . "/../app/services/";
 
-@define("WEB_BASE", $_SERVER['SERVER_NAME']);
-@define("WEB_SRC", $_SERVER['SERVER_NAME'] . 'src/');
-@define("WEB_CSS", $_SERVER['SERVER_NAME'] . 'src/css/');
-@define("WEB_IMG", $_SERVER['SERVER_NAME'] . 'src/img/');
-@define("WEB_JS", $_SERVER['SERVER_NAME'] . 'src/js/');
+@define("WEB_ROOT", $_SERVER['SERVER_NAME'] ?? basename(dirname(__DIR__)));
+@define("WEB_SRC", WEB_ROOT . 'src/');
+@define("WEB_CSS", WEB_ROOT . 'src/css/');
+@define("WEB_IMG", WEB_ROOT . 'src/img/');
+@define("WEB_JS", WEB_ROOT . 'src/js/');
+
+session_start();
+date_default_timezone_set('america/los_angeles');
 
 require_once(DIR_ROOT . "vendor/autoload.php");
 require_once(DIR_ROOT . "config/config.php");
