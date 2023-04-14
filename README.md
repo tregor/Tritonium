@@ -79,10 +79,11 @@ This command will execute every well-formatted migration SQL file:
 - [X] Improve routing system with dynamical in-path params
 - [X] Make ActiveRecord models
 - [ ] Improve ActiveQuery system, add OrWhere
-- [ ] Implement events system
+- [X] Implement events system
 - [ ] Remake Migrations controller and core UI
-- [ ] Exceptions and Errors classification
-- [ ] Take care to in-framework Error Handler (Inline+Full mode+PrettyVarDumper)
+- [X] Exceptions and Errors classification
+- [X] Take care to in-framework Error Handler (Inline+Full mode+PrettyVarDumper)
+- [ ] Improve ErrorHandler, add Inline mode, SQL profilling and JS debugger
 - [ ] Improve templating engine and view renderer.
 - [ ] Dictionaries and ENUMs as services
 - [ ] Make Session and Cookies as JARs
