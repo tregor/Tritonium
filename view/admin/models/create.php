@@ -12,12 +12,15 @@ use Tritonium\Base\App;
 $href_base = "/admin/{$modelname}/";
 $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
 ?>
-<? App::$components->view->include('admin.block.head') ?>
-<? App::$components->view->include('admin.block.header') ?>
+<?
+App::$components->view->include('admin.block.head') ?>
+<?
+App::$components->view->include('admin.block.header') ?>
 
 <div class="d-flex align-items-stretch">
     <!-- Sidebar Navigation-->
-        <? App::$components->view->include('admin.block.sidebar') ?>
+    <?
+    App::$components->view->include('admin.block.sidebar') ?>
     <!-- End Sidebar Navigation-->
 
     <!-- Main Content -->
@@ -60,19 +63,23 @@ $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
                                     $value = '';
                                 }
                                 $type = (strlen($value) > 32) ? 'textarea' : 'text';
-                                    switch ($type) {
-                                        case 'textarea':
-                                            $form_input = '<textarea class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" rows="5">' . $value
-                                                          . '</textarea>';
-                                            $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel($key) . '</label>';
-                                            break;
+                                switch ($type) {
+                                    case 'textarea':
+                                        $form_input = '<textarea class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" rows="5">' . $value
+                                            . '</textarea>';
+                                        $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel(
+                                                $key
+                                            ) . '</label>';
+                                        break;
 
-                                        default:
-                                            $form_input = '<input class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" type="text" name="model'
-                                                          . $key . '" value="' . $value . '" onchange="changed(this);" autocompleate=off>';
-                                            $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel($key) . '</label>';
-                                            break;
-                                    }
+                                    default:
+                                        $form_input = '<input class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" type="text" name="model'
+                                            . $key . '" value="' . $value . '" onchange="changed(this);" autocompleate=off>';
+                                        $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel(
+                                                $key
+                                            ) . '</label>';
+                                        break;
+                                }
                                 ?>
 
                                 <div class="row">
@@ -129,4 +136,5 @@ $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
 
     window.addEventListener('beforeunload', onBeforeUnload);
 </script>
-<? App::$components->view->include('admin.block.footer') ?>
+<?
+App::$components->view->include('admin.block.footer') ?>

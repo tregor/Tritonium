@@ -14,12 +14,15 @@ use Tritonium\Base\App;
 $href_base = "/admin/{$modelname}/{$model_id}/";
 $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
 ?>
-<? App::$components->view->include('admin.block.head') ?>
-<? App::$components->view->include('admin.block.header') ?>
+<?
+App::$components->view->include('admin.block.head') ?>
+<?
+App::$components->view->include('admin.block.header') ?>
 
 <div class="d-flex align-items-stretch">
     <!-- Sidebar Navigation-->
-        <? App::$components->view->include('admin.block.sidebar') ?>
+    <?
+    App::$components->view->include('admin.block.sidebar') ?>
     <!-- End Sidebar Navigation-->
 
     <!-- Main Content -->
@@ -98,4 +101,5 @@ $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
     <!-- Main Content -->
 </div>
 
-<? App::$components->view->include('admin.block.footer') ?>
+<?
+App::$components->view->include('admin.block.footer') ?>
