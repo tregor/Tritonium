@@ -25,12 +25,17 @@ function rcopy($src, $dst) {
             // code...
         }
     }
-    if (file_exists($dst)) rmdir($dst);
+    if (file_exists($dst)) {
+        rmdir($dst);
+    }
     if (is_dir($src)) {
         mkdir($dst);
         $files = scandir($src);
-        foreach ($files as $file)
-        if ($file != "." && $file != "..") rcopy("$src/$file", "$dst/$file");
+        foreach ($files as $file) {
+            if ($file != "." && $file != "..") {
+                rcopy("$src/$file", "$dst/$file");
+            }
+        }
     } else if (file_exists($src)) {
         if (file_exists($dst)) {
             unlink($dst);

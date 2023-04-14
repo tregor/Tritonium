@@ -2,26 +2,23 @@
 
 namespace Tritonium\Base\Services;
 
-use Tritonium\Base\Services\BaseService;
 
 class Config
 {
-	private static $cfg = [];
+    private static $cfg = [];
 
-	private function __construct() { }
+    private function __construct() {}
 
-	static function getAll() { return self::$cfg; }
+    static function get($key) {
+        return isset(self::$cfg[$key]) ? self::$cfg[$key] : NULL;
+    }
 
-	static function get($key)
-	{
-		return isset(self::$cfg[$key]) ? self::$cfg[$key] : NULL;
-	}
+    static function getAll() { return self::$cfg; }
 
-	static function set($key, $value)
-	{
-		if (!defined($key)) {
-			define('cfg_' . $key, $value);
-		}
-		self::$cfg[$key] = $value;
-	}
+    static function set($key, $value) {
+        if ( ! defined($key)) {
+            define('cfg_' . $key, $value);
+        }
+        self::$cfg[$key] = $value;
+    }
 }

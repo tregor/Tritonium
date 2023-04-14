@@ -2,11 +2,9 @@
 
 namespace Tritonium\Base\Controllers;
 
-use Tritonium\Base\Controllers\BaseController;
-use Tritonium\Base\Services\Config;
-use Tritonium\Base\Services\Log;
-use Tritonium\Base\Services\Console;
 use Tritonium\Base\App;
+use Tritonium\Base\Services\Console;
+
 
 class CoreController extends BaseController
 {

@@ -6,10 +6,7 @@ class BaseClass extends \StdClass
 {
 	private $events = [];
 
-    public function __set($name, $value): void
-    {
-        $this->$name = $value;
-    }
+    public function __clone() {}
 
     public function __get($method)
     {
@@ -24,9 +21,9 @@ class BaseClass extends \StdClass
         return NULL;
     }
 
-    public function __clone() { }
-
-    public function __wakeup() { }
+    public function __set($name, $value): void {
+        $this->$name = $value;
+    }
 
     public function __toArray()
     {
@@ -46,6 +43,8 @@ class BaseClass extends \StdClass
         return $array;
     }
 
+    public function __wakeup() {}
+
     public function getClassName() {
         $path = explode('\\', $this::class);
         return array_pop($path);
@@ -53,7 +52,31 @@ class BaseClass extends \StdClass
     public function getClassNameFull() {
         return get_class($this);
     }
-	
+
+    public function off($name, $function = NULL) {
+        if ($function === NULL) {
+            unset($this->events[$name]);
+        } else {
+            $this->events[$name] = array_filter(
+                $this->events[$name],
+                function ($handler) use ($function) {
+                    return $handler[0] !== $function;
+                }
+            );
+        }
+    }
+
+    public function on($name, $function, $stop = FALSE) {
+        $event       = new BaseEvent();
+        $event->name = $name;
+        $event->stop = $stop;
+
+        $this->events[$name][] = [
+            $function,
+            $event,
+        ];
+    }
+
 	public function trigger($name, $data = []){
 		if (isset($this->events[$name])){
 			$handlers = $this->events[$name];
@@ -66,21 +89,5 @@ class BaseClass extends \StdClass
 				call_user_func($handler[0], $event);
 			}
 		}
-	
-	}
-	
-	public function on($name, $function, $stop = FALSE){
-		$event = new BaseEvent();
-		$event->name = $name;
-		$event->stop = $stop;
-		
-		$this->events[$name][] = [
-			$function,
-			$event,
-		];
-	}
-	
-	public function off($name, $function = NULL){
-	
 	}
 }
