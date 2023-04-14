@@ -1,13 +1,11 @@
 <?php
 
-use Tritonium\Base\App;
-use Tritonium\Base\Services\View;
-
 /**
  * This is template file
- * 
+ *
  * @var $data Array
  */
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -26,7 +24,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- Choices.js-->
     <link rel="stylesheet" href="/src/vendor/choices.js/public/assets/styles/choices.min.css">
@@ -39,7 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Favicon-->
     <link rel="shortcut icon" href="/src/img/favicon.ico">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <body>

@@ -14,37 +14,20 @@ class Router extends BaseService
     private $controllerAction;
     private $controllerObj;
 
-    public function addRoute($route, $function) {
+    public function addRoute($route, $function)
+    {
         self::$routes[$route] = $function;
     }
 
-    public function exec($controller = 'default', $action = 'index', $args = []) {
-        $this->args             = $args;
-        $this->controllerName   = toCamelCase($controller);
-        $this->controllerAction = toCamelCase($action);
-        $controllerAppName      = "Tritonium\\App\\Controllers\\" . $this->controllerName . "Controller";
-        $controllerBaseName     = "Tritonium\\Base\\Controllers\\" . $this->controllerName . "Controller";
-
-        if (class_exists($controllerAppName)) {
-            $this->controllerObj = new $controllerAppName;
-        } elseif (class_exists($controllerBaseName)) {
-            $this->controllerObj = new $controllerBaseName;
-        } else {
-            throw new \Exception('Controller "' . $this->controllerName . 'Controller" not found');
-        }
-
-        if ($this->controllerObj instanceof BaseController) {
-            return $this->controllerObj->action($this->controllerAction, $this->args);
-        }
-    }
-
-    public function getRoute($route) {
+    public function getRoute($route)
+    {
         return self::$routes[$route];
     }
 
-    public function hasRoute($path) {
+    public function hasRoute($path)
+    {
         foreach ($this->routes as $route => $action) {
-            $regex    = [];
+            $regex = [];
             $original = str_replace('/', '\/', $route);
             preg_match_all('/^.*<(?:(.*):)?(.*)>.*$/m', $route, $matches, PREG_SET_ORDER, 0);
 
@@ -66,17 +49,18 @@ class Router extends BaseService
                 array_shift($args);
                 $args = array_combine(array_keys($regex), $args);
 
-                return TRUE;
+                return true;
             }
         }
 
-        return FALSE;
+        return false;
     }
 
-    public function route($path) {
+    public function route($path)
+    {
         $this->path = $path;
         foreach ($this->routes as $route => $action) {
-            $regex    = [];
+            $regex = [];
             $original = str_replace('/', '\/', $route);
             preg_match_all('/<(?:(.*):)?(.*)>/Um', $route, $matches, PREG_SET_ORDER, 0);
 
@@ -119,6 +103,45 @@ class Router extends BaseService
             }
         }
 
-        return FALSE;
+        return false;
+    }
+
+    public function exec($controller = 'default', $action = 'index', $args = [])
+    {
+        $this->args = $args;
+        $this->controllerName = toCamelCase($controller);
+        $this->controllerAction = toCamelCase($action);
+        $controllerAppName = "Tritonium\\App\\Controllers\\" . $this->controllerName . "Controller";
+        $controllerBaseName = "Tritonium\\Base\\Controllers\\" . $this->controllerName . "Controller";
+
+        if (class_exists($controllerAppName)) {
+            $this->controllerObj = new $controllerAppName();
+        } elseif (class_exists($controllerBaseName)) {
+            $this->controllerObj = new $controllerBaseName();
+        } else {
+            throw new \Exception('Controller "' . $this->controllerName . 'Controller" not found');
+        }
+
+        if ($this->controllerObj instanceof BaseController) {
+            return $this->controllerObj->action($this->controllerAction, $this->args);
+        }
+
+        return 'access_denied';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param mixed $path
+     */
+    public function setPath($path): void
+    {
+        $this->path = $path;
     }
 }

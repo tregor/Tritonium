@@ -2,6 +2,8 @@
 
 namespace Tritonium\Base\Services;
 
+use JetBrains\PhpStorm\Pure;
+
 class Request extends BaseService
 {
     /**
@@ -11,7 +13,7 @@ class Request extends BaseService
     /**
      * @var string Request body payload
      */
-    protected $body = NULL;
+    protected $body = null;
     /**
      * @var array Request path from root
      */
@@ -44,128 +46,148 @@ class Request extends BaseService
      * @var array Parsed $_SERVER['REQUEST_URI']
      */
     private $rawData = [];
-    
-    public function __construct() {
-        $this->rawData    = parse_url(@$_SERVER['REQUEST_URI']) ?: [];
-        $this->method     = @$_SERVER['REQUEST_METHOD'] ?: "GET";
-        $this->path       = ltrim(rtrim($this->rawData['path'] ?: "/", '/'), '/');
-        $this->body       = file_get_contents("php://input");
-        $this->headers    = getallheaders();
-        $this->cookies    = $_COOKIE;     //TODO: Create CookieJar object
-        $this->session    = $_SESSION;    //TODO: Make session object
-        $this->paramsGET  = $_GET;
+
+    public function __construct()
+    {
+        $this->rawData = parse_url(@$_SERVER['REQUEST_URI']) ?: [];
+        $this->method = @$_SERVER['REQUEST_METHOD'] ?: "GET";
+        $this->path = ltrim(rtrim($this->rawData['path'] ?: "/", '/'), '/');
+        $this->body = file_get_contents("php://input");
+        $this->headers = getallheaders();
+        $this->cookies = $_COOKIE;     //TODO: Create CookieJar object
+        $this->session = $_SESSION;    //TODO: Make session object
+        $this->paramsGET = $_GET;
         $this->paramsPOST = $_POST;
-        $this->files      = $_FILES;
-        
+        $this->files = $_FILES;
+
         if (empty($this->paramsPOST)) {
             parse_str($this->body(), $this->paramsPOST);
         }
     }
-    
-    public function body() {
+
+    public function body()
+    {
         return $this->body;
     }
-    
-    public function cookies($key = '') {
+
+    public function cookies($key = '')
+    {
         if (empty($key)) {
             return $this->cookies;
         } else {
             return @$this->cookies[$key];
         }
     }
-    
-    public function file($filename) {
-        return (isset($this->files[$filename])) ? $this->files[$filename] : NULL;
+
+    public function file($filename)
+    {
+        return (isset($this->files[$filename])) ? $this->files[$filename] : null;
     }
-    
-    public function filesAll() {
+
+    public function filesAll()
+    {
         return $this->files;
     }
-    
-    public function get($key) {
+
+    public function get($key)
+    {
         return $this->paramsGET[$key];
     }
-    
-    public function has($name, $method = NULL): bool {
-//		return ($this->input($name, $method) !== null);
+
+    #[Pure]
+    public function has($name, $method = null): bool
+    {
         return (array_key_exists($name, $this->inputAll($method)));
     }
-    
-    public function hasFile(string $filename): bool {
-        return (isset($this->files[$filename]));
-    }
-    
-    public function header($key) {
-        return $this->headers[$key];
-    }
-    
-    public function headerExist($key) {
-        return array_key_exists($key, $this->headers);
-    }
-    
-    public function headers() {
-        return $this->headers;
-    }
-    
-    public function input($name, $method = NULL) {
-        $data   = array_merge($this->paramsGET, $this->paramsPOST);
-        $method = ($method == NULL) ?: 'all';
-        
+
+    public function inputAll($method = null): array
+    {
+        $data = array_merge($this->paramsGET, $this->paramsPOST);
+        $method = ($method == null) ?: 'all';
+
         if (strtoupper($method) == "GET") {
             $data = $this->paramsGET;
         }
         if (strtoupper($method) == "POST") {
             $data = $this->paramsPOST;
         }
-        
-        if ( ! empty($data[$name])) {
+
+        return $data;
+    }
+
+    public function hasFile(string $filename): bool
+    {
+        return (isset($this->files[$filename]));
+    }
+
+    public function header($key)
+    {
+        return $this->headers[$key];
+    }
+
+    public function headerExist($key)
+    {
+        return array_key_exists($key, $this->headers);
+    }
+
+    public function headers()
+    {
+        return $this->headers;
+    }
+
+    public function input($name, $method = null)
+    {
+        $data = array_merge($this->paramsGET, $this->paramsPOST);
+        $method = ($method == null) ?: 'all';
+
+        if (strtoupper($method) == "GET") {
+            $data = $this->paramsGET;
+        }
+        if (strtoupper($method) == "POST") {
+            $data = $this->paramsPOST;
+        }
+
+        if (!empty($data[$name])) {
             return $data[$name];
         } else {
             // throw new \Exception('Param '.$name.' not found');
-            return NULL;
+            return null;
         }
     }
-    
-    public function inputAll($method = NULL): array {
-        $data   = array_merge($this->paramsGET, $this->paramsPOST);
-        $method = ($method == NULL) ?: 'all';
-        
-        if (strtoupper($method) == "GET") {
-            $data = $this->paramsGET;
-        }
-        if (strtoupper($method) == "POST") {
-            $data = $this->paramsPOST;
-        }
-        
-        return $data;
-    }
-    
-    public function isGET(): bool {
+
+    public function isGET(): bool
+    {
         return ($this->method == "GET");
     }
-    
-    public function isPOST(): bool {
+
+    public function isPOST(): bool
+    {
         return ($this->method == "POST");
     }
-    
-    public function method() {
+
+    public function method()
+    {
         return $this->method;
     }
-    
-    public function path() {
+
+    public function path()
+    {
         return $this->path;
     }
-    
-    public function post($key) {
+
+    public function post($key)
+    {
         return $this->paramsPOST[$key];
     }
-    
-    public function session(): array {
+
+    public function session(): array
+    {
         return $this->session;
     }
-    
+
     /* @deprecated */
-    public function uploadedFiles(): array {
+    public function uploadedFiles(): array
+    {
         return $this->files;
     }
 }

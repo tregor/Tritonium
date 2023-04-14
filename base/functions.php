@@ -1,14 +1,17 @@
 <?php
 
-function toCamelCase($string, $delimiter = "-") {
+function toCamelCase($string, $delimiter = "-")
+{
     return str_replace($delimiter, '', ucwords($string, $delimiter));
 }
 
-function toSnakeCase($string) {
+function toSnakeCase($string)
+{
     return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));
 }
 
-function require_path($path) {
+function require_path($path)
+{
     $files = scandir($path);
     foreach ($files as $file) {
         if (preg_match("/(.*)\.php/", $file)) {
@@ -18,7 +21,8 @@ function require_path($path) {
 }
 
 // copies files and non-empty directories
-function rcopy($src, $dst) {
+function rcopy($src, $dst)
+{
     if (is_dir($dst)) {
         $files = scandir($dst);
         foreach ($files as $file) {
@@ -36,7 +40,7 @@ function rcopy($src, $dst) {
                 rcopy("$src/$file", "$dst/$file");
             }
         }
-    } else if (file_exists($src)) {
+    } elseif (file_exists($src)) {
         if (file_exists($dst)) {
             unlink($dst);
         }
@@ -47,12 +51,13 @@ function rcopy($src, $dst) {
 /*
  * Return num in short format (1.1K, 2M ...)
  */
-function shortNumber($num) {
+function shortNumber($num)
+{
     $units = ['', 'K', 'M', 'B', 'T'];
     for ($i = 0; $num >= 1000; $i++) {
         $num /= 1000;
     }
-    
+
     return round($num, 1) . $units[$i];
 }
 
@@ -64,25 +69,26 @@ function shortNumber($num) {
  *          3 - +1-999-888-7766
  *
  * @param        $phone
- * @param   int  $format
+ * @param int $format
  *
  * @return array|string|string[]|null
  */
-function formatPhone($phone, int $format = 0) {
+function formatPhone($phone, int $format = 0)
+{
     $phone = preg_replace('/\D/', '', $phone);
     if (strlen($phone) === 11) {
         $phone = substr($phone, 1, strlen($phone) - 1);
     }
     if (strlen($phone) !== 10) {
-        return NULL;
+        return null;
     }
-    
+
     $formats = [
         0 => '$1$2$3',
         1 => '+1($1)$2-$3',
         2 => '+1$1$2$3',
         3 => '+1-$1-$2-$3',
     ];
-    
+
     return preg_replace('/.*(\d{3}).*(\d{3}).*(\d{4}).*/', $formats[$format], $phone);
 }

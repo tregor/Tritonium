@@ -2,6 +2,8 @@
 
 namespace Tritonium\Base\Services;
 
+use JetBrains\PhpStorm\NoReturn;
+
 /**
  *
  * App::$components->view->render('template.name', $params);
@@ -23,7 +25,8 @@ class View extends BaseService
     private $headers = [];
     private $httpcode = 200;
 
-    public function include($template = 'default') {
+    public function include($template = 'default')
+    {
         $data = $this->data;
 
         ob_start();
@@ -35,7 +38,8 @@ class View extends BaseService
         printf("%s\r\n", $output);
     }
 
-    public function parseTemplatePath($template) {
+    public function parseTemplatePath($template)
+    {
         $file = str_replace(".", "/", $template) . ".php";
         $path = DIR_VIEW . $file;
 
@@ -46,7 +50,8 @@ class View extends BaseService
         }
     }
 
-    public function redirect($url, $code = 303) {
+    #[NoReturn] public function redirect($url, $code = 303)
+    {
         $this->setHeader('Location', $url);
         $this->setCode($code);
         $this->sendHeaders();
@@ -55,7 +60,30 @@ class View extends BaseService
         die('Redirected...');
     }
 
-    public function render($template = 'default', $data = []) {
+    public function setHeader($key, $value = '')
+    {
+        $this->headers[$key] = $value;
+
+        return $this;
+    }
+
+    public function setCode($code = 200)
+    {
+        $this->httpcode = $code;
+
+        return $this;
+    }
+
+    protected function sendHeaders()
+    {
+        http_response_code($this->httpcode);
+        foreach ($this->headers as $headerName => $headerValue) {
+            header("{$headerName}: {$headerValue}");
+        }
+    }
+
+    public function render($template = 'default', $data = [])
+    {
         $this->data = $data;
 //		 exec('cp -r '.DIR_VIEW.'src/ '.DIR_WEB.'src/', $output, $retrun_var);
         //		 rcopy(DIR_VIEW.'src/',DIR_WEB.'src/');
@@ -71,7 +99,8 @@ class View extends BaseService
         printf("%s\r\n", $output);
     }
 
-    public function renderJSON($data) {
+    public function renderJSON($data)
+    {
         $this->setHeader('Content-Type', 'application/json');
         $this->setCode(200);
         $this->sendHeaders();
@@ -81,7 +110,8 @@ class View extends BaseService
         }
     }
 
-    public function renderRaw($data) {
+    public function renderRaw($data)
+    {
         ob_start();
         echo $data;
         $output = ob_get_contents();
@@ -89,25 +119,6 @@ class View extends BaseService
 
         $this->sendHeaders();
         printf("%s\r\n", $output);
-    }
-
-    public function setCode($code = 200) {
-        $this->httpcode = $code;
-
-        return $this;
-    }
-
-    public function setHeader($key, $value = '') {
-        $this->headers[$key] = $value;
-
-        return $this;
-    }
-
-    protected function sendHeaders() {
-        http_response_code($this->httpcode);
-        foreach ($this->headers as $headerName => $headerValue) {
-            header("{$headerName}: {$headerValue}");
-        }
     }
 
     // static function img($imageName)

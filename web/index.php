@@ -1,4 +1,5 @@
 <?php
+
 /**
  * index.php file recently used to be starting point of scipt
  * Better usage is to use index.php as a router file for project

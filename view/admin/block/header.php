@@ -1,13 +1,11 @@
 <?php
 
-use Tritonium\Base\App;
-use Tritonium\Base\Services\View;
-
 /**
  * This is template file
- * 
+ *
  * @var $data Array
  */
+
 ?>
 <!-- HEADER START -->
 <header class="header">
@@ -17,15 +15,19 @@ use Tritonium\Base\Services\View;
                 <div class="close-btn d-flex align-items-center position-absolute top-0 end-0 me-4 mt-2 cursor-pointer">
                     <span>Close </span>
                     <svg class="svg-icon svg-icon-md svg-icon-heavy text-gray-700 mt-1">
-                        <use xlink:href="#close-1"> </use>
+                        <use xlink:href="#close-1"></use>
                     </svg>
                 </div>
                 <div class="row w-100">
                     <div class="col-lg-8 mx-auto">
                         <form class="px-4" id="searchForm" action="#">
                             <div class="input-group position-relative flex-column flex-lg-row flex-nowrap">
-                                <input class="form-control shadow-0 bg-none px-0 w-100" type="search" name="search" placeholder="What are you searching for...">
-                                <button class="btn btn-link text-gray-600 px-0 text-decoration-none fw-bold cursor-pointer text-center" type="submit">Search</button>
+                                <input class="form-control shadow-0 bg-none px-0 w-100" type="search" name="search"
+                                       placeholder="What are you searching for...">
+                                <button
+                                    class="btn btn-link text-gray-600 px-0 text-decoration-none fw-bold cursor-pointer text-center"
+                                    type="submit">Search
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -34,13 +36,14 @@ use Tritonium\Base\Services\View;
         </div>
         <div class="container-fluid d-flex align-items-center justify-content-between py-1">
             <div class="navbar-header d-flex align-items-center">
-                <a class="navbar-brand text-uppercase text-reset active" href="<?=$settings['base_url']?>">
-                    <div class="brand-text brand-big"><strong class="text-primary">Yelp</strong><strong>Star</strong></div>
+                <a class="navbar-brand text-uppercase text-reset active" href="<?= $settings['base_url'] ?>">
+                    <div class="brand-text brand-big"><strong class="text-primary">Yelp</strong><strong>Star</strong>
+                    </div>
                     <div class="brand-text brand-sm"><strong class="text-primary">Y</strong><strong>S</strong></div>
                 </a>
                 <button class="sidebar-toggle active">
                     <svg class="svg-icon svg-icon-sm svg-icon-heavy transform-none">
-                        <use xlink:href="#arrow-left-1"> </use>
+                        <use xlink:href="#arrow-left-1"></use>
                     </svg>
                 </button>
             </div>
@@ -48,19 +51,21 @@ use Tritonium\Base\Services\View;
                 <li class="list-inline-item">
                     <a class="search-open nav-link px-0" href="#">
                         <svg class="svg-icon svg-icon-xs svg-icon-heavy text-gray-700">
-                            <use xlink:href="#find-1"> </use>
+                            <use xlink:href="#find-1"></use>
                         </svg>
                     </a>
                 </li>
                 <!-- Messages dropdown -->
                 <li class="list-inline-item dropdown px-lg-2">
-                    <a class="nav-link text-reset px-1 px-lg-0" id="navbarDropdownMenuLink1" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link text-reset px-1 px-lg-0" id="navbarDropdownMenuLink1" href="#"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <svg class="svg-icon svg-icon-xs svg-icon-heavy">
-                            <use xlink:href="#envelope-1"> </use>
+                            <use xlink:href="#envelope-1"></use>
                         </svg>
                         <span class="badge bg-dash-color-1">5</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink1">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
+                        aria-labelledby="navbarDropdownMenuLink1">
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="position-relative">
@@ -122,54 +127,67 @@ use Tritonium\Base\Services\View;
                 </li>
                 <!-- Tasks dropdown                   -->
                 <li class="list-inline-item dropdown px-lg-2">
-                    <a class="nav-link text-reset px-1 px-lg-0" id="navbarDropdownMenuLink2" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link text-reset px-1 px-lg-0" id="navbarDropdownMenuLink2" href="#"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <svg class="svg-icon svg-icon-xs svg-icon-heavy">
-                            <use xlink:href="#paper-stack-1"> </use>
+                            <use xlink:href="#paper-stack-1"></use>
                         </svg>
                         <span class="badge bg-dash-color-3">9</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink2">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
+                        aria-labelledby="navbarDropdownMenuLink2">
                         <li>
                             <a class="dropdown-item" href="#">
-                                <div class="d-flex justify-content-between mb-1"><strong>Task 1</strong><span>40% complete</span></div>
+                                <div class="d-flex justify-content-between mb-1"><strong>Task 1</strong><span>40% complete</span>
+                                </div>
                                 <div class="progress" style="height: 2px">
-                                    <div class="progress-bar bg-dash-color-1" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dash-color-1" role="progressbar" style="width: 40%"
+                                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#">
-                                <div class="d-flex justify-content-between mb-1"><strong>Task 2</strong><span>20% complete</span></div>
+                                <div class="d-flex justify-content-between mb-1"><strong>Task 2</strong><span>20% complete</span>
+                                </div>
                                 <div class="progress" style="height: 2px">
-                                    <div class="progress-bar bg-dash-color-2" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dash-color-2" role="progressbar" style="width: 20%"
+                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#">
-                                <div class="d-flex justify-content-between mb-1"><strong>Task 3</strong><span>70% complete</span></div>
+                                <div class="d-flex justify-content-between mb-1"><strong>Task 3</strong><span>70% complete</span>
+                                </div>
                                 <div class="progress" style="height: 2px">
-                                    <div class="progress-bar bg-dash-color-3" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dash-color-3" role="progressbar" style="width: 70%"
+                                         aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#">
-                                <div class="d-flex justify-content-between mb-1"><strong>Task 4</strong><span>40% complete</span></div>
+                                <div class="d-flex justify-content-between mb-1"><strong>Task 4</strong><span>40% complete</span>
+                                </div>
                                 <div class="progress" style="height: 2px">
-                                    <div class="progress-bar bg-dash-color-4" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dash-color-4" role="progressbar" style="width: 40%"
+                                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#">
-                                <div class="d-flex justify-content-between mb-1"><strong>Task 5</strong><span>30% complete</span></div>
+                                <div class="d-flex justify-content-between mb-1"><strong>Task 5</strong><span>30% complete</span>
+                                </div>
                                 <div class="progress" style="height: 2px">
-                                    <div class="progress-bar bg-dash-color-1" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dash-color-1" role="progressbar" style="width: 30%"
+                                         aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </a>
                         </li>
-                        <li>           <a class="dropdown-item text-center" href="#"> <strong>See All Tasks <i class="fas fa-angle-right ms-1"></i></strong></a></li>
+                        <li><a class="dropdown-item text-center" href="#"> <strong>See All Tasks <i
+                                        class="fas fa-angle-right ms-1"></i></strong></a></li>
                     </ul>
                 </li>
                 <!-- Mega menu-->
@@ -294,7 +312,7 @@ use Tritonium\Base\Services\View;
                     <a class="nav-link text-sm text-reset px-1 px-lg-0" id="logout" href="/admin/login?logout=1">
                         <span class="d-none d-sm-inline-block">Logout </span>
                         <svg class="svg-icon svg-icon-xs svg-icon-heavy">
-                            <use xlink:href="#disable-1"> </use>
+                            <use xlink:href="#disable-1"></use>
                         </svg>
                     </a>
                 </li>

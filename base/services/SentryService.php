@@ -14,44 +14,35 @@ class SentryService
 {
     private $dsn;
     private $level = E_ALL;
-    private $defaults = TRUE;
+    private $defaults = true;
 
-    public function __construct($data = NULL) {
-        $this->dsn      = $data['dsn'];
-        $this->level    = $data['level'];
+    public function __construct($data = null)
+    {
+        $this->dsn = $data['dsn'];
+        $this->level = $data['level'];
         $this->defaults = $data['defaults'];
 
         init([
-            'dsn'                  => $this->dsn,
-            'error_types'          => $this->level,
+            'dsn' => $this->dsn,
+            'error_types' => $this->level,
             'default_integrations' => $this->defaults,
         ]);
     }
 
-    public static function debug(string $message, $data = NULL) {
+    public static function debug(string $message, $data = null)
+    {
         self::log($message, $data, 'debug');
     }
 
-    public static function error(string $message, $data = NULL) {
-        self::log($message, $data, 'error');
-    }
-
-    public static function fatal(string $message, $data = NULL) {
-        self::log($message, $data, 'fatal');
-    }
-
-    public static function info(string $message, $data = NULL) {
-        self::log($message, $data, 'info');
-    }
-
-    public static function log(string $message, $data = NULL, $level = 'info') {
+    public static function log(string $message, $data = null, $level = 'info')
+    {
         withScope(function (Scope $scope) use ($message, $data, $level): void {
             $scope->setLevel(Severity::$level());
-            if ( ! empty($data)) {
+            if (!empty($data)) {
                 if (is_object($data)) {
                     $data = $data->__toArray();
                 }
-                if ( ! is_array($data)) {
+                if (!is_array($data)) {
                     $data = ['data' => $data];
                 }
                 foreach ($data as $key => $value) {
@@ -63,7 +54,23 @@ class SentryService
         });
     }
 
-    public static function warning(string $message, $data = NULL) {
+    public static function error(string $message, $data = null)
+    {
+        self::log($message, $data, 'error');
+    }
+
+    public static function fatal(string $message, $data = null)
+    {
+        self::log($message, $data, 'fatal');
+    }
+
+    public static function info(string $message, $data = null)
+    {
+        self::log($message, $data, 'info');
+    }
+
+    public static function warning(string $message, $data = null)
+    {
         self::log($message, $data, 'warning');
     }
 }

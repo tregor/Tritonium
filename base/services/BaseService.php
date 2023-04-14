@@ -7,13 +7,17 @@ use Tritonium\Base\BaseClass;
 
 class BaseService extends BaseClass
 {
-    public function __construct($data = []) {
-        if ( ! empty($data)) {
+    public function __construct($data = [])
+    {
+        if (!empty($data)) {
             return self::configure($this, $data);
         }
+
+        return $this;
     }
 
-    public static function configure($object, $properties) {
+    public static function configure($object, $properties)
+    {
         foreach ($properties as $name => $value) {
             $object->$name = $value;
         }

@@ -2,11 +2,15 @@
 
 namespace Tritonium\Base;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 class BaseClass extends \StdClass
 {
-	private $events = [];
+    private $events = [];
 
-    public function __clone() {}
+    public function __clone()
+    {
+    }
 
     public function __get($method)
     {
@@ -18,13 +22,15 @@ class BaseClass extends \StdClass
             return $this->$method();
         }
 
-        return NULL;
+        return null;
     }
 
-    public function __set($name, $value): void {
+    public function __set($name, $value): void
+    {
         $this->$name = $value;
     }
 
+    #[ArrayShape(['className' => "string"])]
     public function __toArray()
     {
         $reflection = new \ReflectionClass($this);
@@ -43,18 +49,24 @@ class BaseClass extends \StdClass
         return $array;
     }
 
-    public function __wakeup() {}
+    public function __wakeup()
+    {
+    }
 
-    public function getClassName() {
+    public function getClassName()
+    {
         $path = explode('\\', $this::class);
         return array_pop($path);
     }
-    public function getClassNameFull() {
+
+    public function getClassNameFull()
+    {
         return get_class($this);
     }
 
-    public function off($name, $function = NULL) {
-        if ($function === NULL) {
+    public function off($name, $function = null)
+    {
+        if ($function === null) {
             unset($this->events[$name]);
         } else {
             $this->events[$name] = array_filter(
@@ -66,8 +78,9 @@ class BaseClass extends \StdClass
         }
     }
 
-    public function on($name, $function, $stop = FALSE) {
-        $event       = new BaseEvent();
+    public function on($name, $function, $stop = false)
+    {
+        $event = new BaseEvent();
         $event->name = $name;
         $event->stop = $stop;
 
@@ -77,17 +90,18 @@ class BaseClass extends \StdClass
         ];
     }
 
-	public function trigger($name, $data = []){
-		if (isset($this->events[$name])){
-			$handlers = $this->events[$name];
-			
-			foreach ($handlers as $handler){
-				$event = $handler[1];
-				$event->initiator = $this;
-				$event->data = $data;
-				
-				call_user_func($handler[0], $event);
-			}
-		}
-	}
+    public function trigger($name, $data = [])
+    {
+        if (isset($this->events[$name])) {
+            $handlers = $this->events[$name];
+
+            foreach ($handlers as $handler) {
+                $event = $handler[1];
+                $event->initiator = $this;
+                $event->data = $data;
+
+                call_user_func($handler[0], $event);
+            }
+        }
+    }
 }

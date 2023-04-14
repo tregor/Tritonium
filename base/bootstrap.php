@@ -18,18 +18,18 @@
 use Tritonium\Base\App;
 
 
-const ROOT       = __DIR__ . "/../";
-const DIR_ROOT   = __DIR__ . "/../";
-const DIR_APP    = __DIR__ . "/../app/";
-const DIR_BASE   = __DIR__ . "/../base/";
+const ROOT = __DIR__ . "/../";
+const DIR_ROOT = __DIR__ . "/../";
+const DIR_APP = __DIR__ . "/../app/";
+const DIR_BASE = __DIR__ . "/../base/";
 const DIR_CONFIG = __DIR__ . "/../config/";
-const DIR_LOGS   = __DIR__ . "/../logs/";
-const DIR_VIEW   = __DIR__ . "/../view/";
-const DIR_WEB    = __DIR__ . "/../web/";
+const DIR_LOGS = __DIR__ . "/../logs/";
+const DIR_VIEW = __DIR__ . "/../view/";
+const DIR_WEB = __DIR__ . "/../web/";
 
 const DIR_CONTROLLERS = __DIR__ . "/../app/controllers/";
-const DIR_MODELS      = __DIR__ . "/../app/models/";
-const DIR_SERVICES    = __DIR__ . "/../app/services/";
+const DIR_MODELS = __DIR__ . "/../app/models/";
+const DIR_SERVICES = __DIR__ . "/../app/services/";
 
 @define("WEB_ROOT", $_SERVER['SERVER_NAME'] ?? basename(dirname(__DIR__)));
 @define("WEB_SRC", WEB_ROOT . 'src/');

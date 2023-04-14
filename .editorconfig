@@ -1,16 +1,62 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
 root = true
 
 [*]
+indent_style = space
+indent_size = 4
 charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
 end_of_line = lf
+
+[*.php]
+# Use PSR-12 coding style
+# See: https://www.php-fig.org/psr/psr-12/
 indent_size = 4
 indent_style = space
-insert_final_newline = false
-max_line_length = 240
-tab_width = 4
+# Use 4 spaces for indenting
+# Change to "tab" if you prefer tabs
+# See: https://www.php-fig.org/psr/psr-12/#2-3-tabs-or-spaces
+# trim_trailing_whitespace = true
+# Remove trailing whitespace on all lines
+# See: https://www.php-fig.org/psr/psr-12/#4-6-trailing-whitespace
+# insert_final_newline = true
+# Add a newline at the end of each file
+# See: https://www.php-fig.org/psr/psr-12/#4-1-files
+end_of_line = lf
+# Use Linux-style line endings
+# See: https://www.php-fig.org/psr/psr-12/#2-2-line-length
+max_line_length = 120
+# Limit lines to 120 characters
+# See: https://www.php-fig.org/psr/psr-12/#4-4-constant-visibilities
+# constants_case = upper
+# Use uppercase for constants like TRUE or NULL, except true or null
+# Uncomment the above line if you want to enforce this rule
+# See: https://www.php-fig.org/psr/psr-12/#4-2-properties
+# short_array_syntax = true
+# Use short array syntax where possible
+# Uncomment the above line if you want to enforce this rule
+# See: https://www.php-fig.org/psr/psr-12/#5-1-docblocks
+# phpdoc_trim_consecutive_blank_line_separation = true
+# Remove blank lines between PHPDoc blocks
+# Uncomment the above line if you want to enforce this rule
+# See: https://www.php-fig.org/psr/psr-12/#6-1-namespaces
+# blank_line_after_namespace = true
+# Add a blank line after the namespace declaration
+# Uncomment the above line if you want to enforce this rule
+# See: https://www.php-fig.org/psr/psr-12/#6-2-use-blocks
+# blank_line_after_use = true
+# Add a blank line after the use block
+# Uncomment the above line if you want to enforce this rule
 
-[*.css]
-indent_style = tab
+[*.yml]
+indent_size = 2
+# Use 2 spaces for indenting YAML files
+# Change to "tab" if you prefer tabs
 
-[{*.ctp,*.engine,*.hphp,*.inc,*.install,*.module,*.php,*.php4,*.php5,*.php___jb_old___,*.phtml,*.profile,*.test,*.theme}]
-indent_style = space
+[*.md]
+trim_trailing_whitespace = false
+# Don't remove trailing whitespace from Markdown files
+# See: https://gist.github.com/rodneyrehm/8013067
