@@ -16,11 +16,11 @@ class Migrations extends BaseModel
     /**
      * @var string Primary key, default is "ID"
      */
-    protected $key = 'id';
+    protected string $key = 'id';
     /**
      * @var string[] List of attributes we will have access
      */
-    protected $attributes = [
+    protected array $attributes = [
         'id',
         'name',
         'status',

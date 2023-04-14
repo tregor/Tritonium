@@ -15,12 +15,12 @@ class User extends BaseModel
     /**
      * @var string Primary key, default is "ID"
      */
-    protected $key = 'user_id';
+    protected string $key = 'user_id';
 
     /**
      * @var string[] List of attributes we will have access
      */
-    protected $attributes = [
+    protected array $attributes = [
         'user_id',
         'login',
         'password',
