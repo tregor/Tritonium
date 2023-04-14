@@ -5,9 +5,9 @@ namespace Tritonium\Base\Models;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 use PDOException;
+use Throwable;
 use Tritonium\Base\App;
 use Tritonium\Base\BaseClass;
-use Tritonium\Base\Services\Log;
 
 
 class BaseModel extends BaseClass
@@ -16,15 +16,15 @@ class BaseModel extends BaseClass
     /**
      * @var string Default key of model
      */
-    protected $key = "id";
+    protected string $key = "id";
     /**
      * @var string[] List of attributes
      */
-    protected $attributes = [];
+    protected array $attributes = [];
     /**
      * @var string[] List of attributes that can be read
      */
-    protected $secured = [
+    protected array $secured = [
         'id',
         'created_at',
         'updated_at',
@@ -32,7 +32,7 @@ class BaseModel extends BaseClass
     /**
      * @var string[] List of labels for output
      */
-    protected $labels = [
+    protected array $labels = [
         'id' => 'ID',
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
@@ -53,11 +53,7 @@ class BaseModel extends BaseClass
         $order_by = (!empty($order_by)) ? ' ORDER BY `' . $order_by . '`' : '';
         $sort = $sort_asc ? ' ASC' : ' DESC';
 
-        $sql = 'SELECT * FROM `' . $model->table . '` '
-            . $order_by
-            . $sort
-            . $limit
-            . $offset;
+        $sql = 'SELECT * FROM `' . $model->table . '` ' . $order_by . $sort . $limit . $offset;
 
         return $model->execute($sql);
     }
@@ -92,43 +88,6 @@ class BaseModel extends BaseClass
         $model = new static();
 
         return $model->execute('SELECT * FROM `' . $model->table . '` LIMIT ' . $limit);
-    }
-
-    public static function create($data)
-    {
-        try {
-            $model = new static();
-            $attributes = array_flip($model->attributes);
-            $data = array_filter($data, function ($data) use ($attributes) {
-                return isset($attributes[$data]);
-            }, ARRAY_FILTER_USE_KEY);
-            $sql = 'INSERT INTO `' . $model->table . '` (';
-            foreach ($data as $column => $value) {
-                $sql .= '`' . $column . '`, ';
-            }
-            $sql = trim($sql, ', ');
-            $sql .= ') VALUES (';
-            foreach ($data as $column => $value) {
-                $sql .= ':' . $column . ', ';
-            }
-            $sql = trim($sql, ', ');
-            $sql .= ')';
-            $statement = $model->connect->prepare($sql);
-            foreach ($data as $column => $value) {
-                $statement->bindValue(':' . $column, $value);
-            }
-            try {
-                $statement->execute();
-
-                return $model->connect->lastInsertId();
-            } catch (PDOException $e) {
-                $model->connect->rollback();
-
-                return "Error" . $e->getMessage();
-            }
-        } catch (PDOException $e) {
-            return "Error" . $e->getMessage();
-        }
     }
 
     public static function delete($value, $key = '')
@@ -169,7 +128,7 @@ class BaseModel extends BaseClass
 
     public static function first($value, $key = false)
     {
-        return self::find($value, $key)[0];
+        return (isset(self::find($value, $key)[0])) ? self::find($value, $key)[0] : null;
     }
 
     public static function find($value, $key = false)
@@ -240,7 +199,7 @@ class BaseModel extends BaseClass
 
             $sql = 'UPDATE ' . $model->table . ' SET ';
             if (empty($data[$model->key])) {
-                throw new Exception('Not found primary key');
+                return self::create($data);
             }
             $primary_key = $data[$model->key];
             unset($data[$model->key]);
@@ -249,23 +208,16 @@ class BaseModel extends BaseClass
             }
             $sql = trim($sql, ', ');
             $sql .= ' WHERE `' . $model->key . '` = :' . $model->key;
-            // var_dump($sql);
-            // var_dump($data);
             $statement = $model->connect->prepare($sql);
             foreach ($data as $column => $value) {
-                // $mysqli_tmp = new \mysqli();
-                // $value_clean = mysqli_real_escape_string($mysqli_tmp, $value);
-                // $value_clean = $model->connect->quote($value);
-                // var_dump([$column, $value, $value_clean]);
                 $statement->bindValue(':' . $column, $value);
-                // $statement->bindValue(':' . $column, $value_clean);
             }
             $statement->bindValue(':' . $model->key, $primary_key);
-            // var_dump($statement);
-            // $statement->debugDumpParams();
 
             try {
+                $model->connect->beginTransaction();
                 $statement->execute();
+                $model->connect->commit();
 
                 return $model->connect->lastInsertId();
             } catch (PDOException $e) {
@@ -280,42 +232,39 @@ class BaseModel extends BaseClass
         }
     }
 
-    public static function save_old($data)
+    public static function create($data)
     {
+        $model = new static();
+        $attributes = array_flip($model->attributes);
+        $data = array_filter($data, function ($data) use ($attributes) {
+            return isset($attributes[$data]);
+        }, ARRAY_FILTER_USE_KEY);
+        $sql = 'INSERT INTO `' . $model->table . '` (';
+        foreach ($data as $column => $value) {
+            $sql .= '`' . $column . '`, ';
+        }
+        $sql = trim($sql, ', ');
+        $sql .= ') VALUES (';
+        foreach ($data as $column => $value) {
+            $sql .= ':' . $column . ', ';
+        }
+        $sql = trim($sql, ', ');
+        $sql .= ')';
+        $statement = $model->connect->prepare($sql);
+        foreach ($data as $column => $value) {
+            $statement->bindValue(':' . $column, $value);
+        }
+
         try {
-            $model = new static();
-            $attributes = array_flip($model->attributes);
-            $data = array_filter($data, function ($data) use ($attributes) {
-                return isset($attributes[$data]);
-            }, ARRAY_FILTER_USE_KEY);
+            $model->connect->beginTransaction();
+            $statement->execute();
+            $model->connect->commit();
 
-            $sql = 'UPDATE ' . $model->table . ' SET ';
-            if (empty($data[$model->key])) {
-                throw new Exception('Not found primary key');
-            }
-            $primary_key = $data[$model->key];
-            unset($data[$model->key]);
-            foreach ($data as $key => $value) {
-                $sql .= '' . $key . ' = :' . $key . ', ';
-            }
-            $sql = trim($sql, ', ');
-            $sql .= ' WHERE ' . $model->key . ' = :' . $model->key;
-            $statement = $model->connect->prepare($sql);
-            foreach ($data as $column => $value) {
-                $statement->bindValue(':' . $column, $value);
-            }
-            $statement->bindValue(':' . $model->key, $primary_key);
-            try {
-                $statement->execute();
-
-                return $model->connect->lastInsertId();
-            } catch (PDOException $e) {
-                $model->connect->rollback();
-
-                return "Error" . $e->getMessage();
-            }
+            return $model->connect->lastInsertId();
         } catch (PDOException $e) {
-            return "Error" . $e->getMessage();
+            $model->connect->rollback();
+
+            throw $e;
         }
     }
 }
