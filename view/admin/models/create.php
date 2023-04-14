@@ -1,7 +1,5 @@
 <?php
 
-use Tritonium\App\Models\Update;
-use Tritonium\App\Models\User;
 use Tritonium\Base\App;
 
 /**
@@ -13,20 +11,13 @@ use Tritonium\Base\App;
 
 $href_base = "/admin/{$modelname}/";
 $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
-
-$cookies = App::$components->request->cookies();
-$user_token = $cookies['admin_token'];
-$user = User::getByToken($user_token);
 ?>
-<?
-App::$view->include('admin.block.head') ?>
-<?
-App::$view->include('admin.block.header') ?>
+<? App::$components->view->include('admin.block.head') ?>
+<? App::$components->view->include('admin.block.header') ?>
 
 <div class="d-flex align-items-stretch">
     <!-- Sidebar Navigation-->
-    <?
-    App::$view->include('admin.block.sidebar') ?>
+        <? App::$components->view->include('admin.block.sidebar') ?>
     <!-- End Sidebar Navigation-->
 
     <!-- Main Content -->
@@ -69,13 +60,19 @@ App::$view->include('admin.block.header') ?>
                                     $value = '';
                                 }
                                 $type = (strlen($value) > 32) ? 'textarea' : 'text';
-                                $form_input = match ($type) {
-                                    'textarea' => '<textarea class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" rows="5">' . $value . '</textarea>',
-                                    default => '<input class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" type="text" name="model' . $key . '" value="' . $value . '" onchange="changed(this);" autocompleate=off>',
-                                };
-                                $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel(
-                                        $key
-                                    ) . '</label>';
+                                    switch ($type) {
+                                        case 'textarea':
+                                            $form_input = '<textarea class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" rows="5">' . $value
+                                                          . '</textarea>';
+                                            $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel($key) . '</label>';
+                                            break;
+
+                                        default:
+                                            $form_input = '<input class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" type="text" name="model'
+                                                          . $key . '" value="' . $value . '" onchange="changed(this);" autocompleate=off>';
+                                            $form_label = '<label class="form-label" for="model-' . $key . '">' . $modelClass::getLabel($key) . '</label>';
+                                            break;
+                                    }
                                 ?>
 
                                 <div class="row">
@@ -132,5 +129,4 @@ App::$view->include('admin.block.header') ?>
 
     window.addEventListener('beforeunload', onBeforeUnload);
 </script>
-<?
-App::$view->include('admin.block.footer') ?>
+<? App::$components->view->include('admin.block.footer') ?>

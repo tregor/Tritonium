@@ -13,15 +13,12 @@ use Tritonium\Base\App;
 $href_base = "/admin/{$modelname}/";
 $modelClass = '\\Tritonium\\App\\Models\\' . ucfirst($modelname);
 ?>
-<?
-App::$view->include('admin.block.head') ?>
-<?
-App::$view->include('admin.block.header') ?>
+<? App::$components->view->include('admin.block.head') ?>
+<? App::$components->view->include('admin.block.header') ?>
 
 <div class="d-flex align-items-stretch">
     <!-- Sidebar Navigation-->
-    <?
-    App::$view->include('admin.block.sidebar') ?>
+        <? App::$components->view->include('admin.block.sidebar') ?>
     <!-- End Sidebar Navigation-->
 
     <!-- Main Content -->
@@ -59,11 +56,19 @@ App::$view->include('admin.block.header') ?>
                             <?php
                             foreach ($model as $key => $value) {
                                 $type = (strlen($value) > 32) ? 'textarea' : 'text';
-                                $form_input = match ($type) {
-                                    'textarea' => '<textarea class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" rows="3">' . $value . '</textarea>',
-                                    default => '<input class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" type="text" name="model' . $key . '" value="' . $value . '" onchange="changed(this);">',
-                                };
+                                    switch ($type) {
+                                        case 'textarea':
+                                            $form_input = '<textarea class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" rows="3">' . $value
+                                                          . '</textarea>';
                                 $form_label = '<label class="form-label" for="model-' . $key . '">' . $key . '</label>';
+                                            break;
+
+                                        default:
+                                            $form_input = '<input class="form-control" id="model-' . $key . '" name="' . $modelname . '[' . $key . ']" type="text" name="model'
+                                                          . $key . '" value="' . $value . '" onchange="changed(this);">';
+                                            $form_label = '<label class="form-label" for="model-' . $key . '">' . $key . '</label>';
+                                            break;
+                                    }
                                 ?>
 
                                 <div class="row">
