@@ -10,8 +10,11 @@ use Tritonium\Base\Services\ActiveQuery;
 use Tritonium\Base\Services\PDO;
 
 
-class ActiveModel extends BaseClass
+    abstract class ActiveModel extends BaseClass
 {
+    use ActiveModelUtils;
+
+
     /**
      * @var PDO
      */
@@ -40,6 +43,10 @@ class ActiveModel extends BaseClass
      * @var array
      */
     protected array $readonly = [];
+    /**
+     * @var array
+     */
+    protected array $hidden = [];
 
     public function __construct($isNew = true)
     {
@@ -129,6 +136,9 @@ class ActiveModel extends BaseClass
         }, ARRAY_FILTER_USE_KEY);
 
         if ($this->isNewRecord) {
+            if (isset($data[$this->getKey()])) {
+                unset($data[$this->getKey()]);
+            }
             $values = $cols = [];
             foreach ($data as $key => $value) {
                 $values[] = ":$key";
@@ -144,15 +154,11 @@ class ActiveModel extends BaseClass
             }
 
             try {
-//                $this->connect->beginTransaction();
+                $this->connect->beginTransaction();
                 $statement->execute();
-//                $this->connect->commit();
+                $model_id = $this->connect->lastInsertId();
+                $this->connect->commit();
 
-                if (isset($data[$this->getKey()])) {
-                    $model_id = $this->getKeyValue();
-                } else {
-                    $model_id = $this->connect->lastInsertId();
-                }
                 $this->isNewRecord = false;
                 $this->properties = $this->byID($model_id)->__toArray();
 
@@ -162,7 +168,6 @@ class ActiveModel extends BaseClass
                     $this->connect->rollback();
                 }
 
-                var_dump($statement->debugDumpParams());
                 throw $exception;
             }
         } else {
